@@ -133,7 +133,7 @@
   </div>
 </div>
 
-<!-- Маленькие серые кнопки в правом нижнем углу -->
+<!-- Маленькие серые кнопки -->
 <div class="floating-buttons">
   <button onclick="downloadJSON()" class="floating-btn">
     <i class="fas fa-download"></i> Скачать JSON
@@ -183,20 +183,18 @@ let barChartInstance = null;
 let currentCategoryFilter = '';
 let currentMonthFilter = '';
 
-// ==================== РАБОТА С JSON НА GITHUB ====================
 const JSON_FILENAME = "my_finance_transactions.json";
 
+// ==================== ЗАГРУЗКА ИЗ GITHUB ====================
 async function loadFromGitHub() {
   try {
-    const response = await fetch(JSON_FILENAME + '?t=' + Date.now()); // чтобы не брал из кэша
-    if (!response.ok) {
-      throw new Error("Файл не найден");
-    }
+    const response = await fetch(JSON_FILENAME + '?t=' + Date.now());
+    if (!response.ok) throw new Error("Файл не найден");
     const data = await response.json();
     if (Array.isArray(data)) {
       transactions = data;
       filteredTransactions = [...transactions];
-      console.log(`Загружено ${transactions.length} транзакций из ${JSON_FILENAME}`);
+      console.log(`Загружено ${transactions.length} транзакций из GitHub`);
     }
   } catch (e) {
     console.log("JSON файл на GitHub не найден или пустой. Начинаем с пустого списка.");
@@ -565,7 +563,7 @@ document.getElementById('search').oninput = filterData;
 document.getElementById('categoryFilter').onchange = filterData;
 document.getElementById('monthFilter').onchange = filterData;
 
-// Запускаем загрузку из файла на GitHub при старте
+// ЗАПУСК: сначала пытаемся загрузить данные из JSON на GitHub
 loadFromGitHub();
 </script>
 </body>
