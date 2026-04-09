@@ -28,12 +28,14 @@
   <h1 class="text-4xl font-bold text-gray-800 mb-8 flex items-center gap-3">
     <i class="fas fa-wallet text-blue-600"></i> Анализ моих финансов
   </h1>
+
   <!-- Загрузка CSV -->
   <div class="bg-white rounded-2xl shadow p-6 mb-8">
     <h2 class="text-2xl font-semibold mb-4">Загрузить выписку из банка</h2>
     <input type="file" id="csvFile" accept=".csv"
            class="block w-full text-sm text-gray-500 file:mr-4 file:py-3 file:px-6 file:rounded-xl file:border-0 file:text-sm file:font-medium file:bg-blue-600 file:text-white hover:file:bg-blue-700">
   </div>
+
   <!-- Ручное добавление -->
   <div class="bg-white rounded-2xl shadow p-6 mb-8">
     <h2 class="text-xl font-semibold mb-4">Добавить транзакцию вручную</h2>
@@ -48,8 +50,10 @@
       <i class="fas fa-plus"></i> Добавить транзакцию
     </button>
   </div>
+
   <!-- Карточки -->
   <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10" id="summaryCards"></div>
+
   <!-- Фильтры -->
   <div class="bg-white rounded-2xl shadow p-6 mb-8 flex flex-wrap gap-4 items-end">
     <input id="search" placeholder="Поиск по описанию или счёту..."
@@ -58,6 +62,7 @@
     <select id="monthFilter" class="px-4 py-3 border rounded-xl"></select>
     <button onclick="resetFilters()" class="px-6 py-3 bg-gray-200 hover:bg-gray-300 rounded-xl">Сбросить фильтры</button>
   </div>
+
   <!-- Таблица -->
   <div class="bg-white rounded-2xl shadow overflow-hidden mb-10">
     <table class="w-full">
@@ -75,11 +80,13 @@
       <tbody id="tableBody" class="divide-y"></tbody>
     </table>
   </div>
+
   <div class="flex justify-center mb-10">
     <button id="loadMoreBtn" onclick="loadMore()" class="hidden px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-medium">
       Показать ещё 15 операций
     </button>
   </div>
+
   <!-- Графики -->
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
     <div class="bg-white rounded-2xl shadow p-6">
@@ -91,7 +98,8 @@
       <canvas id="barChart" height="320"></canvas>
     </div>
   </div>
-  <!-- Кнопки JSON -->
+
+  <!-- Кнопки JSON + Сбросить все данные -->
   <div class="flex justify-center gap-4 mb-8">
     <button onclick="exportData()"
             class="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-medium flex items-center gap-3 shadow-lg">
@@ -99,7 +107,11 @@
     </button>
     <button onclick="importData()"
             class="px-8 py-4 bg-purple-600 hover:bg-purple-700 text-white rounded-2xl font-medium flex items-center gap-3 shadow-lg">
-      <i class="fas fa-upload"></i> Импорт данных из JSON
+      <i class="fas fa-upload"></i> Импорт данных из JSON (добавить к существующим)
+    </button>
+    <button onclick="clearAllData()"
+            class="px-8 py-4 bg-red-600 hover:bg-red-700 text-white rounded-2xl font-medium flex items-center gap-3 shadow-lg">
+      <i class="fas fa-trash-alt"></i> Сбросить все данные
     </button>
   </div>
 </div>
@@ -132,6 +144,7 @@ function showConfirm(message) {
     { text: "ОК", style: "bg-red-600 text-white", value: true }
   ]);
 }
+
 // ==================== ПЕРЕМЕННЫЕ ====================
 let transactions = [];
 let filteredTransactions = [];
@@ -142,19 +155,6 @@ let barChartInstance = null;
 const STORAGE_KEY = 'myFinanceTransactions';
 let currentCategoryFilter = '';
 let currentMonthFilter = '';
-
-// ==================== АВТОМАТИЧЕСКОЕ СОХРАНЕНИЕ В JSON ====================
-function autoSaveToJSON() {
-  if (transactions.length === 0) return;
-  const dataStr = JSON.stringify(transactions, null, 2);
-  const blob = new Blob([dataStr], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = 'my_finance_transactions.json';
-  link.click();
-  URL.revokeObjectURL(url);
-}
 
 // ==================== СОРТИРОВКА ====================
 function sortTransactions() {
@@ -173,7 +173,64 @@ function loadSavedData() {
 
 function saveData() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(transactions));
-  autoSaveToJSON();   // ← Автоматически скачивает JSON при любом изменении
+}
+
+// ==================== РАБОТА С JSON ====================
+function exportData() {
+  if (transactions.length === 0) {
+    return showAlert('Нет данных для экспорта');
+  }
+  const dataStr = JSON.stringify(transactions, null, 2);
+  const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+  const exportFileDefaultName = 'my_finance_transactions.json';
+  const linkElement = document.createElement('a');
+  linkElement.setAttribute('href', dataUri);
+  linkElement.setAttribute('download', exportFileDefaultName);
+  linkElement.click();
+  showAlert('✅ Данные экспортированы в JSON-файл');
+}
+
+function importData() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json';
+  input.onchange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = async function(event) {
+      try {
+        const imported = JSON.parse(event.target.result);
+        if (!Array.isArray(imported)) throw new Error();
+
+        const action = await showConfirm(`Найдено ${imported.length} операций.<br><br>Что сделать с этими данными?`, [
+          { text: "Заменить все данные", style: "bg-red-600 text-white", value: "replace" },
+          { text: "Добавить к существующим", style: "bg-blue-600 text-white", value: "add" },
+          { text: "Отмена", style: "bg-gray-200", value: "cancel" }
+        ]);
+
+        if (action === "cancel") return;
+        if (action === "replace") {
+          transactions = imported;
+        } else if (action === "add") {
+          transactions = [...transactions, ...imported];
+        }
+
+        sortTransactions();
+        saveData();
+        filteredTransactions = [...transactions];
+        currentPage = 1;
+        currentCategoryFilter = '';
+        currentMonthFilter = '';
+        renderAll();
+        await showAlert(`✅ Успешно ${action === "replace" ? "заменено" : "добавлено"} ${imported.length} операций!`);
+      } catch(e) {
+        await showAlert('Ошибка: файл повреждён или не является корректным JSON.');
+      }
+    };
+    reader.readAsText(file);
+  };
+  input.click();
 }
 
 async function clearAllData() {
@@ -216,6 +273,7 @@ document.getElementById('csvFile').addEventListener('change', function(e) {
           category: (row.category || 'Без категории').trim()
         };
       }).filter(t => t.date && !isNaN(t.amount));
+
       if (newTransactions.length === 0) {
         await showAlert('Не удалось прочитать транзакции.');
         return;
@@ -223,8 +281,9 @@ document.getElementById('csvFile').addEventListener('change', function(e) {
       const replace = await showConfirm(`Найдено ${newTransactions.length} операций.<br><br>Заменить все данные или добавить?`);
       if (replace) transactions = newTransactions;
       else transactions = [...transactions, ...newTransactions];
+
       sortTransactions();
-      saveData();                    // ← Автосохранение
+      saveData();
       filteredTransactions = [...transactions];
       currentPage = 1;
       currentCategoryFilter = '';
@@ -243,6 +302,7 @@ function addTransaction() {
   const amount = parseFloat(document.getElementById('amountInput').value);
   const cat = document.getElementById('catInput').value.trim() || 'Без категории';
   if (!date || isNaN(amount)) return showAlert('Заполните дату и сумму!');
+
   transactions.push({
     id: crypto.randomUUID(),
     date,
@@ -252,7 +312,7 @@ function addTransaction() {
     category: cat
   });
   sortTransactions();
-  saveData();                        // ← Автосохранение
+  saveData();
   filteredTransactions = [...transactions];
   currentPage = 1;
   renderAll();
@@ -310,7 +370,7 @@ async function editTransaction(id) {
   trans.description = newDesc;
   trans.amount = newAmount;
   sortTransactions();
-  saveData();                          // ← Автосохранение
+  saveData();
   renderAll();
 }
 
@@ -319,7 +379,7 @@ function deleteTransaction(id) {
     if (confirmed) {
       transactions = transactions.filter(t => String(t.id) !== String(id));
       sortTransactions();
-      saveData();                      // ← Автосохранение
+      saveData();
       filteredTransactions = [...transactions];
       currentPage = 1;
       renderAll();
