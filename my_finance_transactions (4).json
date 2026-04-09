@@ -1,0 +1,946 @@
+[
+  {
+    "id": "e5e30401-8a9d-45b9-9302-0ec571318fb3",
+    "date": "2026-04-05",
+    "description": "—",
+    "account": "Оксана К.",
+    "amount": -80,
+    "category": "Еда Церковь"
+  },
+  {
+    "id": "5c55c770-4731-49e5-aa26-d96e71d4bcb1",
+    "date": "2026-04-04",
+    "description": "—",
+    "account": "T2",
+    "amount": -338,
+    "category": "Связь, интернет и ТВ"
+  },
+  {
+    "id": "303cecfa-7148-4250-a9b6-03b67b7e472c",
+    "date": "2026-04-01",
+    "description": "—",
+    "account": "Между своими счетами",
+    "amount": -3900,
+    "category": "Прочие расходы"
+  },
+  {
+    "id": "3e7219ec-d7fc-4cbf-99eb-422ce91389df",
+    "date": "2026-03-31",
+    "description": "—",
+    "account": "Яна З.",
+    "amount": -100,
+    "category": "Молодежка"
+  },
+  {
+    "id": "470d8c2d-2838-44bc-8d20-ca70758dfdfc",
+    "date": "2026-03-30",
+    "description": "—",
+    "account": "Между своими счетами",
+    "amount": 4000,
+    "category": "Пополнения"
+  },
+  {
+    "id": "6a6a5c14-67e5-4ae1-ba81-d96c1f1ec4e3",
+    "date": "2026-03-29",
+    "description": "—",
+    "account": "Алена Д.",
+    "amount": -2000,
+    "category": "Репетитор русский"
+  },
+  {
+    "id": "bab5ae53-6d20-4812-9225-3cf8f979eb26",
+    "date": "2026-03-29",
+    "description": "—",
+    "account": "Марина Г.",
+    "amount": -1000,
+    "category": "Репетитор математика"
+  },
+  {
+    "id": "afd55b5c-a0d5-4262-ba76-383dfbe2a068",
+    "date": "2026-03-29",
+    "description": "—",
+    "account": "Между своими счетами",
+    "amount": 3000,
+    "category": "Пополнения"
+  },
+  {
+    "id": "39f23f5f-e356-4241-9670-4b8c82e384c3",
+    "date": "2026-03-29",
+    "description": "—",
+    "account": "Оксана К.",
+    "amount": -120,
+    "category": "Еда Церковь"
+  },
+  {
+    "id": "ced7c821-0c0a-4c68-b903-9e19748f375e",
+    "date": "2026-03-26",
+    "description": "—",
+    "account": "Оксана К.",
+    "amount": -50,
+    "category": "Еда Церковь"
+  },
+  {
+    "id": "53a1b997-93c5-4f46-80fd-e89fbd2191e8",
+    "date": "2026-03-25",
+    "description": "—",
+    "account": "Оксана К.",
+    "amount": -80,
+    "category": "Еда Церковь"
+  },
+  {
+    "id": "da8e8835-72ed-4c03-85b3-fdc4938be443",
+    "date": "2026-03-24",
+    "description": "—",
+    "account": "Между своими счетами",
+    "amount": 180,
+    "category": "Пополнения"
+  },
+  {
+    "id": "70284fc1-3033-432f-8439-3878c2cb5955",
+    "date": "2026-03-24",
+    "description": "—",
+    "account": "ПАО СБЕРБАНК, ИНН 7707083893",
+    "amount": -179.98,
+    "category": "Прочие расходы"
+  },
+  {
+    "id": "a859eaae-1f84-4103-9fd8-713d29395bd1",
+    "date": "2026-03-22",
+    "description": "—",
+    "account": "ПАО СБЕРБАНК, ИНН 7707083893",
+    "amount": -279.98,
+    "category": "Прочие расходы"
+  },
+  {
+    "id": "9a98ca7e-8fed-48fc-a4f6-863834a6fb2c",
+    "date": "2026-03-22",
+    "description": "—",
+    "account": "Оксана К.",
+    "amount": -80,
+    "category": "Еда Церковь"
+  },
+  {
+    "id": "3cde0c93-6eb5-4cb7-8156-aaacd27b75e4",
+    "date": "2026-03-19",
+    "description": "—",
+    "account": "Алена Д.",
+    "amount": -2000,
+    "category": "Репетитор русский"
+  },
+  {
+    "id": "b768ea20-0196-4c4e-a128-a7ae68b94198",
+    "date": "2026-03-19",
+    "description": "—",
+    "account": "Марина Г.",
+    "amount": -1000,
+    "category": "Репетитор математика"
+  },
+  {
+    "id": "4d837c80-393f-4c23-878d-965366c3e3c4",
+    "date": "2026-03-19",
+    "description": "—",
+    "account": "Оксана К.",
+    "amount": -80,
+    "category": "Еда Церковь"
+  },
+  {
+    "id": "5d43e646-71c8-4014-88bb-0188f1708127",
+    "date": "2026-03-17",
+    "description": "—",
+    "account": "Нэсп без идентификации Д",
+    "amount": -219,
+    "category": "Прочие расходы"
+  },
+  {
+    "id": "d931fd4d-53f7-4762-b0b1-603aa8f79e76",
+    "date": "2026-03-17",
+    "description": "—",
+    "account": "Между своими счетами",
+    "amount": 1000,
+    "category": "Пополнения"
+  },
+  {
+    "id": "737de587-7daa-49ae-a12b-165245907874",
+    "date": "2026-03-16",
+    "description": "—",
+    "account": "Между своими счетами",
+    "amount": 4000,
+    "category": "Пополнения"
+  },
+  {
+    "id": "9b699ee0-e7a0-4277-a492-0ae98136ecd2",
+    "date": "2026-03-16",
+    "description": "—",
+    "account": "ПАО СБЕРБАНК, ИНН 7707083893",
+    "amount": -134.98,
+    "category": "Прочие расходы"
+  },
+  {
+    "id": "ef4185f6-e447-4446-8c1d-3442855c4c69",
+    "date": "2026-03-15",
+    "description": "—",
+    "account": "Между своими счетами",
+    "amount": 200,
+    "category": "Пополнения"
+  },
+  {
+    "id": "69650f75-722a-48a1-a67b-d8e31a79f4fa",
+    "date": "2026-03-15",
+    "description": "—",
+    "account": "ПАО СБЕРБАНК, ИНН 7707083893",
+    "amount": -91.8,
+    "category": "Прочие расходы"
+  },
+  {
+    "id": "ca3338da-112f-434a-a3ef-f6ae4f66569a",
+    "date": "2026-03-15",
+    "description": "—",
+    "account": "Оксана К.",
+    "amount": -135,
+    "category": "Еда Церковь"
+  },
+  {
+    "id": "7c508c5f-9665-46a1-9634-7eccae1473eb",
+    "date": "2026-03-13",
+    "description": "—",
+    "account": "Андрей З.",
+    "amount": -460,
+    "category": "Финансовые операции"
+  },
+  {
+    "id": "4af94b6c-8df7-4cee-b979-5175c9bacc83",
+    "date": "2026-03-13",
+    "description": "—",
+    "account": "Алена Д.",
+    "amount": -2000,
+    "category": "Репетитор русский"
+  },
+  {
+    "id": "5e70c9de-47a9-4a8d-a3c7-8852805af68c",
+    "date": "2026-03-12",
+    "description": "—",
+    "account": "Оксана К.",
+    "amount": -80,
+    "category": "Еда Церковь"
+  },
+  {
+    "id": "ff274120-c2e4-4fa2-8931-e2edc6451371",
+    "date": "2026-03-12",
+    "description": "—",
+    "account": "Марина Г.",
+    "amount": -500,
+    "category": "Репетитор математика"
+  },
+  {
+    "id": "647e69c4-e2ce-4305-9c87-6ea1ca8d3423",
+    "date": "2026-03-12",
+    "description": "—",
+    "account": "Между своими счетами",
+    "amount": 2500,
+    "category": "Пополнения"
+  },
+  {
+    "id": "f5442a8c-a4f9-44a4-ad74-b70430d88503",
+    "date": "2026-03-11",
+    "description": "—",
+    "account": "Оксана К.",
+    "amount": -80,
+    "category": "Еда Церковь"
+  },
+  {
+    "id": "0508782a-06b5-467a-b802-652ce055a743",
+    "date": "2026-03-09",
+    "description": "—",
+    "account": "Яна З.",
+    "amount": -100,
+    "category": "Молодежка"
+  },
+  {
+    "id": "186b38ed-1dc0-4bbd-a46b-e3f3fe90f534",
+    "date": "2026-03-08",
+    "description": "—",
+    "account": "Оксана К.",
+    "amount": -40,
+    "category": "Еда Церковь"
+  },
+  {
+    "id": "02e84d01-12c9-4b41-aa68-4cf660afa7de",
+    "date": "2026-03-05",
+    "description": "—",
+    "account": "Оксана К.",
+    "amount": -80,
+    "category": "Еда Церковь"
+  },
+  {
+    "id": "8f99660d-0795-469a-b9e1-1f5f5f50d014",
+    "date": "2026-03-05",
+    "description": "—",
+    "account": "Андрей З.",
+    "amount": -1115,
+    "category": "Финансовые операции"
+  },
+  {
+    "id": "1eb29c0d-4b73-41cb-b0da-925b9231bcb0",
+    "date": "2026-03-05",
+    "description": "—",
+    "account": "Павел Г.",
+    "amount": -667,
+    "category": "Финансовые операции"
+  },
+  {
+    "id": "76a14a13-1e52-4e1e-98f1-7ab8e8594f8b",
+    "date": "2026-03-05",
+    "description": "—",
+    "account": "Марина Г.",
+    "amount": -1000,
+    "category": "Репетитор математика"
+  },
+  {
+    "id": "20c72aa6-bc9a-4b27-af75-d8a7aa664339",
+    "date": "2026-03-05",
+    "description": "—",
+    "account": "Между своими счетами",
+    "amount": 1667,
+    "category": "Пополнения"
+  },
+  {
+    "id": "06d05c26-eb80-48de-b27c-04e2043cec54",
+    "date": "2026-03-05",
+    "description": "—",
+    "account": "Алена Д.",
+    "amount": -2000,
+    "category": "Репетитор русский"
+  },
+  {
+    "id": "135fa6cb-f993-4b61-b5e8-3126a6493713",
+    "date": "2026-03-04",
+    "description": "—",
+    "account": "Оксана К.",
+    "amount": -80,
+    "category": "Еда Церковь"
+  },
+  {
+    "id": "f26f54eb-10a0-44bd-91ca-312e1da73165",
+    "date": "2026-03-03",
+    "description": "—",
+    "account": "Андрей З.",
+    "amount": -200,
+    "category": "Финансовые операции"
+  },
+  {
+    "id": "006ca802-b1d7-4e2b-9060-e0125623fb02",
+    "date": "2026-03-03",
+    "description": "—",
+    "account": "t2",
+    "amount": -338,
+    "category": "Связь, интернет и ТВ"
+  },
+  {
+    "id": "da5f0bbd-ec52-4482-bb85-f6188fd3235f",
+    "date": "2026-03-02",
+    "description": "—",
+    "account": "Между своими счетами",
+    "amount": 4000,
+    "category": "Пополнения"
+  },
+  {
+    "id": "f0cc8027-e08b-4956-9c4a-7308aefc635c",
+    "date": "2026-03-02",
+    "description": "—",
+    "account": "ПАО СБЕРБАНК, ИНН 7707083893",
+    "amount": -9.99,
+    "category": "Прочие расходы"
+  },
+  {
+    "id": "e74d904b-2fb0-4886-9bb3-72f9b6184e86",
+    "date": "2026-03-02",
+    "description": "—",
+    "account": "ПАО СБЕРБАНК, ИНН 7707083893",
+    "amount": -264.98,
+    "category": "Прочие расходы"
+  },
+  {
+    "id": "157aad7f-6677-4512-bcd5-80b16328906c",
+    "date": "2026-03-01",
+    "description": "—",
+    "account": "Оксана К.",
+    "amount": -100,
+    "category": "Еда Церковь"
+  },
+  {
+    "id": "a771334e-89d5-40fd-984d-db2d388e0190",
+    "date": "2026-02-26",
+    "description": "—",
+    "account": "Оксана К.",
+    "amount": -55,
+    "category": "Еда Церковь"
+  },
+  {
+    "id": "ae5c0c49-cbfc-405b-aa30-7e74953a1e86",
+    "date": "2026-02-26",
+    "description": "—",
+    "account": "Оксана К.",
+    "amount": -20,
+    "category": "Еда Церковь"
+  },
+  {
+    "id": "1fd31a48-fb1f-4737-b283-8b6ab26ce017",
+    "date": "2026-02-26",
+    "description": "—",
+    "account": "Алена Д.",
+    "amount": -2000,
+    "category": "Репетитор русский"
+  },
+  {
+    "id": "f4b701ac-b230-48ac-83f2-f12cd8a1a96a",
+    "date": "2026-02-26",
+    "description": "—",
+    "account": "Марина Г.",
+    "amount": -500,
+    "category": "Репетитор математика"
+  },
+  {
+    "id": "6932939f-d3e4-4fc9-b060-738ff9c2b50e",
+    "date": "2026-02-26",
+    "description": "—",
+    "account": "Между своими счетами",
+    "amount": 150,
+    "category": "Пополнения"
+  },
+  {
+    "id": "3ef29ec8-f966-4fbe-8e72-f8f16bbea67c",
+    "date": "2026-02-25",
+    "description": "—",
+    "account": "Между своими счетами",
+    "amount": -200,
+    "category": "Прочие расходы"
+  },
+  {
+    "id": "73593c43-8e08-4132-86db-0e8d4a4bea51",
+    "date": "2026-02-25",
+    "description": "—",
+    "account": "Оксана К.",
+    "amount": -80,
+    "category": "Еда Церковь"
+  },
+  {
+    "id": "bd85c372-ee6e-472e-afe4-52e45f3c4171",
+    "date": "2026-02-25",
+    "description": "—",
+    "account": "Между своими счетами",
+    "amount": 4000,
+    "category": "Пополнения"
+  },
+  {
+    "id": "bfc7172f-5e9f-4eed-9581-686b43a02416",
+    "date": "2026-02-22",
+    "description": "—",
+    "account": "Оксана К.",
+    "amount": -70,
+    "category": "Еда Церковь"
+  },
+  {
+    "id": "b43f5688-b287-4252-9d03-971785348b78",
+    "date": "2026-02-21",
+    "description": "—",
+    "account": "Яна З.",
+    "amount": -45,
+    "category": "Молодежка"
+  },
+  {
+    "id": "99480f66-3499-4aed-a281-2033bb073bb3",
+    "date": "2026-02-19",
+    "description": "—",
+    "account": "Оксана К.",
+    "amount": -80,
+    "category": "Еда Церковь"
+  },
+  {
+    "id": "763783a1-d8f5-49e7-8892-5d79befdbb24",
+    "date": "2026-02-18",
+    "description": "—",
+    "account": "Оксана К.",
+    "amount": -40,
+    "category": "Еда Церковь"
+  },
+  {
+    "id": "46ef202f-d6b4-4bd5-bdc5-d312d1a76a36",
+    "date": "2026-02-18",
+    "description": "—",
+    "account": "Оксана К.",
+    "amount": -80,
+    "category": "Еда Церковь"
+  },
+  {
+    "id": "f670c29e-3485-418f-a2e1-749bfd4634c2",
+    "date": "2026-02-17",
+    "description": "—",
+    "account": "Марина Г.",
+    "amount": -1000,
+    "category": "Репетитор математика"
+  },
+  {
+    "id": "fc0977bc-b00b-455d-be2d-8d14de940e83",
+    "date": "2026-02-17",
+    "description": "—",
+    "account": "Алена Д.",
+    "amount": -2000,
+    "category": "Репетитор русский"
+  },
+  {
+    "id": "f0dbaa17-be0d-4872-b454-3f142e48b876",
+    "date": "2026-02-17",
+    "description": "—",
+    "account": "Между своими счетами",
+    "amount": 3000,
+    "category": "Пополнения"
+  },
+  {
+    "id": "58d6a827-bc45-4f2b-9179-b616d7a8781d",
+    "date": "2026-02-17",
+    "description": "—",
+    "account": "ПАО СБЕРБАНК, ИНН 7707083893",
+    "amount": -93.9,
+    "category": "Прочие расходы"
+  },
+  {
+    "id": "82666d89-62d1-4b8c-9a6e-ccf8f6eead8b",
+    "date": "2026-02-13",
+    "description": "—",
+    "account": "Между своими счетами",
+    "amount": -5400,
+    "category": "Прочие расходы"
+  },
+  {
+    "id": "c86573e7-3f13-4d7d-84c1-a5e9f58f8313",
+    "date": "2026-02-13",
+    "description": "—",
+    "account": "Между своими счетами",
+    "amount": 480,
+    "category": "Пополнения"
+  },
+  {
+    "id": "0a6c5ee4-4571-4a96-946f-4e3b11e8dade",
+    "date": "2026-02-13",
+    "description": "—",
+    "account": "Между своими счетами",
+    "amount": -1700,
+    "category": "Прочие расходы"
+  },
+  {
+    "id": "a56af00d-6b06-42d2-8cef-191f2051bc53",
+    "date": "2026-02-12",
+    "description": "—",
+    "account": "Оксана К.",
+    "amount": -60,
+    "category": "Еда Церковь"
+  },
+  {
+    "id": "1854b859-89d0-4689-a93b-2568cd0d5cc7",
+    "date": "2026-02-12",
+    "description": "—",
+    "account": "Между своими счетами",
+    "amount": -500,
+    "category": "Прочие расходы"
+  },
+  {
+    "id": "1b0008ff-c6e9-467c-b0c8-dc1ac2eb0925",
+    "date": "2026-02-12",
+    "description": "—",
+    "account": "Между своими счетами",
+    "amount": 7200,
+    "category": "Пополнения"
+  },
+  {
+    "id": "e574157e-0e26-4237-b2b7-de8e3d037f7c",
+    "date": "2026-02-11",
+    "description": "—",
+    "account": "Оксана К.",
+    "amount": -90,
+    "category": "Еда Церковь"
+  },
+  {
+    "id": "0007c7e3-12e7-4584-a851-062804aa6b66",
+    "date": "2026-02-10",
+    "description": "—",
+    "account": "Между своими счетами",
+    "amount": 480,
+    "category": "Пополнения"
+  },
+  {
+    "id": "478b1e92-b280-4b54-bb8c-731f448d95e3",
+    "date": "2026-02-06",
+    "description": "—",
+    "account": "ПАО СБЕРБАНК, ИНН 7707083893",
+    "amount": -569.95,
+    "category": "Прочие расходы"
+  },
+  {
+    "id": "5572fe01-f005-4019-b333-3eef017b19db",
+    "date": "2026-02-06",
+    "description": "—",
+    "account": "Между своими счетами",
+    "amount": 90,
+    "category": "Пополнения"
+  },
+  {
+    "id": "f9d18ed1-a8c2-49da-8377-9bef25308907",
+    "date": "2026-02-05",
+    "description": "—",
+    "account": "Оксана К.",
+    "amount": -90,
+    "category": "Еда Церковь"
+  },
+  {
+    "id": "5605ff85-f6a9-4104-a534-a58b1b51ceea",
+    "date": "2026-02-04",
+    "description": "—",
+    "account": "Оксана К.",
+    "amount": -90,
+    "category": "Еда Церковь"
+  },
+  {
+    "id": "5d63ddd6-c144-45c2-a7a7-8164d6375c8f",
+    "date": "2026-02-04",
+    "description": "—",
+    "account": "Марина Г.",
+    "amount": -1000,
+    "category": "Репетитор математика"
+  },
+  {
+    "id": "d8c615b9-787d-4e24-9211-fffa6e25526f",
+    "date": "2026-02-04",
+    "description": "—",
+    "account": "Алена Д.",
+    "amount": -2000,
+    "category": "Репетитор русский"
+  },
+  {
+    "id": "0c4330d4-b29c-4483-b9a1-3d0e520988a0",
+    "date": "2026-02-03",
+    "description": "—",
+    "account": "t2",
+    "amount": -338,
+    "category": "Связь, интернет и ТВ"
+  },
+  {
+    "id": "568e2b73-cdd8-457b-b9b6-9582ba8c5726",
+    "date": "2026-02-03",
+    "description": "—",
+    "account": "Между своими счетами",
+    "amount": -1000,
+    "category": "Прочие расходы"
+  },
+  {
+    "id": "b0ba4985-a80c-45c2-986a-e6f812e8c203",
+    "date": "2026-02-03",
+    "description": "—",
+    "account": "Между своими счетами",
+    "amount": 2000,
+    "category": "Пополнения"
+  },
+  {
+    "id": "effc2e99-9fc9-474d-bf7a-56ad8f623644",
+    "date": "2026-02-03",
+    "description": "—",
+    "account": "Давид Дмитриевич П",
+    "amount": -1000,
+    "category": "Прочие расходы"
+  },
+  {
+    "id": "4807aba2-8b03-490d-8713-6141d51bb443",
+    "date": "2026-02-03",
+    "description": "—",
+    "account": "Между своими счетами",
+    "amount": 4000,
+    "category": "Пополнения"
+  },
+  {
+    "id": "ab89037c-feba-422c-8d9c-8dd68e3685ea",
+    "date": "2026-02-01",
+    "description": "—",
+    "account": "Оксана К.",
+    "amount": -60,
+    "category": "Еда Церковь"
+  },
+  {
+    "id": "b4a87676-78b4-4434-b5be-650be1507f4a",
+    "date": "2026-01-31",
+    "description": "—",
+    "account": "ПАО СБЕРБАНК, ИНН 7707083893",
+    "amount": -319.98,
+    "category": "Прочие расходы"
+  },
+  {
+    "id": "9cc8c7fc-34f8-42a7-8eae-7f9f8e738273",
+    "date": "2026-01-31",
+    "description": "—",
+    "account": "ПАО СБЕРБАНК, ИНН 7707083893",
+    "amount": -62.98,
+    "category": "Прочие расходы"
+  },
+  {
+    "id": "3e61e090-d7a6-47c8-abf9-279987007e6e",
+    "date": "2026-01-29",
+    "description": "—",
+    "account": "Оксана К.",
+    "amount": -130,
+    "category": "Еда Церковь"
+  },
+  {
+    "id": "f8f97f32-6677-4f53-ae05-6a6ebc5ecb37",
+    "date": "2026-01-28",
+    "description": "—",
+    "account": "Алена Д.",
+    "amount": -2000,
+    "category": "Репетитор русский"
+  },
+  {
+    "id": "31263460-edec-41c1-8157-57b1a1fd13ae",
+    "date": "2026-01-28",
+    "description": "—",
+    "account": "Марина Г.",
+    "amount": -500,
+    "category": "Репетитор математика"
+  },
+  {
+    "id": "a104663b-bdd3-4df1-8672-4c575b28954c",
+    "date": "2026-01-28",
+    "description": "—",
+    "account": "Между своими счетами",
+    "amount": 3000,
+    "category": "Пополнения"
+  },
+  {
+    "id": "d3279078-3c8a-4271-b514-adc0a24df35e",
+    "date": "2026-01-28",
+    "description": "—",
+    "account": "Оксана К.",
+    "amount": -90,
+    "category": "Еда Церковь"
+  },
+  {
+    "id": "8d07bba8-0a19-46c5-b5eb-90b6c84b0f20",
+    "date": "2026-01-26",
+    "description": "—",
+    "account": "Между своими счетами",
+    "amount": 130,
+    "category": "Пополнения"
+  },
+  {
+    "id": "ae7103d1-8c64-4467-8cac-89e81eaa571e",
+    "date": "2026-01-25",
+    "description": "—",
+    "account": "Оксана К.",
+    "amount": -90,
+    "category": "Еда Церковь"
+  },
+  {
+    "id": "b7089202-1902-4133-a9e1-e28be22e34a8",
+    "date": "2026-01-24",
+    "description": "—",
+    "account": "ПАО СБЕРБАНК, ИНН 7707083893",
+    "amount": -624.97,
+    "category": "Прочие расходы"
+  },
+  {
+    "id": "fa84057a-a666-40e5-b302-ea2c99ff5644",
+    "date": "2026-01-24",
+    "description": "—",
+    "account": "Между своими счетами",
+    "amount": 500,
+    "category": "Пополнения"
+  },
+  {
+    "id": "6b259940-2067-4f85-a6d4-f9ae9ea38ce1",
+    "date": "2026-01-22",
+    "description": "—",
+    "account": "Оксана К.",
+    "amount": -80,
+    "category": "Еда Церковь"
+  },
+  {
+    "id": "c6a958c3-099c-445c-ba46-a123d5a4fa04",
+    "date": "2026-01-21",
+    "description": "—",
+    "account": "Оксана К.",
+    "amount": -60,
+    "category": "Еда Церковь"
+  },
+  {
+    "id": "7bb009b0-c783-4e59-b06d-cc1ab5acbd5c",
+    "date": "2026-01-19",
+    "description": "—",
+    "account": "Марина Г.",
+    "amount": -1000,
+    "category": "Репетитор математика"
+  },
+  {
+    "id": "b88b17e3-d2cf-40fe-ace8-931c9724d800",
+    "date": "2026-01-19",
+    "description": "—",
+    "account": "Алена Д.",
+    "amount": -2000,
+    "category": "Репетитор русский"
+  },
+  {
+    "id": "4e98dbbb-c884-4b35-8397-4fbf98e0f77e",
+    "date": "2026-01-19",
+    "description": "—",
+    "account": "Яна З.",
+    "amount": -1100,
+    "category": "Молодежка"
+  },
+  {
+    "id": "28c4cdd2-8ec2-4b5f-97aa-e7d7cb2d69ba",
+    "date": "2026-01-19",
+    "description": "—",
+    "account": "Между своими счетами",
+    "amount": 500,
+    "category": "Пополнения"
+  },
+  {
+    "id": "7095ab01-43b1-491a-95b2-aeed328b9942",
+    "date": "2026-01-19",
+    "description": "—",
+    "account": "Между своими счетами",
+    "amount": 4000,
+    "category": "Пополнения"
+  },
+  {
+    "id": "faf25c17-dde2-4152-b8f9-37e141e41667",
+    "date": "2026-01-19",
+    "description": "—",
+    "account": "ПАО СБЕРБАНК, ИНН 7707083893",
+    "amount": -174,
+    "category": "Прочие расходы"
+  },
+  {
+    "id": "e2b90039-dcd1-426d-862d-2b31cd549e97",
+    "date": "2026-01-18",
+    "description": "—",
+    "account": "Оксана К.",
+    "amount": -80,
+    "category": "Еда Церковь"
+  },
+  {
+    "id": "aefd0a5b-de21-44ad-aa7e-d4043029af57",
+    "date": "2026-01-15",
+    "description": "—",
+    "account": "Нэсп без идентификации Д",
+    "amount": -185,
+    "category": "Прочие расходы"
+  },
+  {
+    "id": "474e8817-34cc-4be4-8a6e-335c9db75dd8",
+    "date": "2026-01-15",
+    "description": "—",
+    "account": "Между своими счетами",
+    "amount": 223,
+    "category": "Пополнения"
+  },
+  {
+    "id": "22adee1c-8165-406c-941b-aa9752c9bcb6",
+    "date": "2026-01-15",
+    "description": "—",
+    "account": "Нэсп без идентификации Д",
+    "amount": -475,
+    "category": "Прочие расходы"
+  },
+  {
+    "id": "d83a6249-694a-41a1-8af4-f6f0b5532126",
+    "date": "2026-01-14",
+    "description": "—",
+    "account": "Оксана К.",
+    "amount": -80,
+    "category": "Еда Церковь"
+  },
+  {
+    "id": "1683cc1a-73d5-4f96-95ce-d7bc619ccb23",
+    "date": "2026-01-13",
+    "description": "—",
+    "account": "Марина Г.",
+    "amount": -1000,
+    "category": "Репетитор математика"
+  },
+  {
+    "id": "7050bb1e-c1e3-46e9-9680-bfe0787e27ab",
+    "date": "2026-01-13",
+    "description": "—",
+    "account": "Алена Д.",
+    "amount": -2000,
+    "category": "Репетитор русский"
+  },
+  {
+    "id": "2f0467c2-2e5e-4fa9-92d9-90e3274bcb6a",
+    "date": "2026-01-13",
+    "description": "—",
+    "account": "Между своими счетами",
+    "amount": 3000,
+    "category": "Пополнения"
+  },
+  {
+    "id": "1fe48d30-200a-4423-ac75-80a23617ad1b",
+    "date": "2026-01-12",
+    "description": "—",
+    "account": "Между своими счетами",
+    "amount": 232,
+    "category": "Пополнения"
+  },
+  {
+    "id": "32d30dac-aa14-453d-804e-c956e7534196",
+    "date": "2026-01-11",
+    "description": "—",
+    "account": "Давид Дмитриевич П",
+    "amount": -232,
+    "category": "Прочие расходы"
+  },
+  {
+    "id": "52748eaa-c4e9-48b5-bc08-51f7295d8804",
+    "date": "2026-01-09",
+    "description": "—",
+    "account": "Между своими счетами",
+    "amount": 700,
+    "category": "Пополнения"
+  },
+  {
+    "id": "75afb395-9f4d-44dc-b250-b8e044b5e093",
+    "date": "2026-01-07",
+    "description": "—",
+    "account": "Оксана К.",
+    "amount": -70,
+    "category": "Еда Церковь"
+  },
+  {
+    "id": "814acb84-529b-4fe6-9417-757870a40cbe",
+    "date": "2026-01-06",
+    "description": "—",
+    "account": "Между своими счетами",
+    "amount": -300,
+    "category": "Прочие расходы"
+  },
+  {
+    "id": "e33ab668-6c40-46cd-954e-5b35962a1901",
+    "date": "2026-01-04",
+    "description": "—",
+    "account": "Оксана К.",
+    "amount": -70,
+    "category": "Еда Церковь"
+  },
+  {
+    "id": "69721bb6-7e02-43ee-bd3b-7eb1721f96f8",
+    "date": "2026-01-03",
+    "description": "—",
+    "account": "t2",
+    "amount": -338,
+    "category": "Связь, интернет и ТВ"
+  },
+  {
+    "id": "72235470-416c-4951-9e8a-567258a16516",
+    "date": "2026-01-03",
+    "description": "—",
+    "account": "Между своими счетами",
+    "amount": 865,
+    "category": "Пополнения"
+  }
+]
