@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Анализ Транзакций</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    .modal { animation: fadeIn 0.2s ease-out; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body class="bg-gray-50 font-sans">
+<div id="modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="modal bg-white rounded-3xl shadow-2xl max-w-lg w-full mx-4 overflow-hidden">
+    <div id="modalHeader" class="px-6 py-4 border-b font-semibold text-lg"></div>
+    <div id="modalBody" class="px-6 py-6 text-gray-700"></div>
+    <div id="modalFooter" class="px-6 py-4 border-t flex justify-end gap-3"></div>
+  </div>
+</div>
+<div class="max-w-7xl mx-auto p-6">
+  <h1 class="text-4xl font-bold text-gray-800 mb-8 flex items-center gap-3">
+    <i class="fas fa-wallet text-blue-600"></i> Анализ моих финансов
+  </h1>
+  <!-- Загрузка CSV -->
+  <div class="bg-white rounded-2xl shadow p-6 mb-8">
+    <h2 class="text-2xl font-semibold mb-4">Загрузить выписку из банка</h2>
+    <input type="file" id="csvFile" accept=".csv"
+           class="block w-full text-sm text-gray-500 file:mr-4 file:py-3 file:px-6 file:rounded-xl file:border-0 file:text-sm file:font-medium file:bg-blue-600 file:text-white hover:file:bg-blue-700">
+  </div>
+  <!-- Ручное добавление -->
+  <div class="bg-white rounded-2xl shadow p-6 mb-8">
+    <h2 class="text-xl font-semibold mb-4">Добавить транзакцию вручную</h2>
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+      <div><label class="block text-sm text-gray-600 mb-1">Дата</label><input id="dateInput" type="date" class="w-full px-4 py-3 border rounded-xl"></div>
+      <div><label class="block text-sm text-gray-600 mb-1">Описание</label><input id="descInput" type="text" placeholder="Можно оставить пустым" class="w-full px-4 py-3 border rounded-xl"></div>
+      <div><label class="block text-sm text-gray-600 mb-1">Счёт / Получатель</label><input id="accountInput" type="text" placeholder="Оксана К. или T2" class="w-full px-4 py-3 border rounded-xl"></div>
+      <div><label class="block text-sm text-gray-600 mb-1">Сумма</label><input id="amountInput" type="number" step="0.01" placeholder="125000 или -3500" class="w-full px-4 py-3 border rounded-xl"></div>
+      <div><label class="block text-sm text-gray-600 mb-1">Категория</label><input id="catInput" type="text" placeholder="Продукты" class="w-full px-4 py-3 border rounded-xl"></div>
+    </div>
+    <button onclick="addTransaction()" class="mt-6 px-8 py-3 bg-green-600 hover:bg-green-700 text-white rounded-xl font-medium flex items-center gap-2">
+      <i class="fas fa-plus"></i> Добавить транзакцию
+    </button>
+  </div>
+  <!-- Карточки -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10" id="summaryCards"></div>
+  <!-- Фильтры -->
+  <div class="bg-white rounded-2xl shadow p-6 mb-8 flex flex-wrap gap-4 items-end">
+    <input id="search" placeholder="Поиск по описанию или счёту..."
+           class="flex-1 min-w-[250px] px-4 py-3 border rounded-xl focus:outline-none focus:border-blue-500">
+    <select id="categoryFilter" class="px-4 py-3 border rounded-xl"></select>
+    <select id="monthFilter" class="px-4 py-3 border rounded-xl"></select>
+    <button onclick="resetFilters()" class="px-6 py-3 bg-gray-200 hover:bg-gray-300 rounded-xl">Сбросить фильтры</button>
+  </div>
+  <!-- Таблица -->
+  <div class="bg-white rounded-2xl shadow overflow-hidden mb-10">
+    <table class="w-full">
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="px-6 py-4 text-left">Дата</th>
+          <th class="px-6 py-4 text-left">Описание</th>
+          <th class="px-6 py-4 text-left">Счёт / Получатель</th>
+          <th class="px-6 py-4 text-left">Категория</th>
+          <th class="px-6 py-4 text-right">Сумма</th>
+          <th class="px-6 py-4 text-right">Остаток</th>
+          <th class="px-6 py-4 text-center w-20">Действия</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody" class="divide-y"></tbody>
+    </table>
+  </div>
+  <div class="flex justify-center mb-10">
+    <button id="loadMoreBtn" onclick="loadMore()" class="hidden px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-medium">
+      Показать ещё 15 операций
+    </button>
+  </div>
+  <!-- Графики -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
+    <div class="bg-white rounded-2xl shadow p-6">
+      <h2 class="text-xl font-semibold mb-4">Расходы по категориям</h2>
+      <canvas id="pieChart" height="320"></canvas>
+    </div>
+    <div class="bg-white rounded-2xl shadow p-6">
+      <h2 class="text-xl font-semibold mb-4">Приход / Расход по месяцам</h2>
+      <canvas id="barChart" height="320"></canvas>
+    </div>
+  </div>
+  <div class="flex justify-center">
+    <button onclick="clearAllData()" class="px-8 py-4 bg-red-600 hover:bg-red-700 text-white rounded-2xl font-medium flex items-center gap-3 shadow-lg">
+      <i class="fas fa-trash-alt"></i> Сбросить все данные
+    </button>
+  </div>
+</div>
+<script>
+// ==================== МОДАЛЬНЫЕ ОКНА ====================
+let currentResolve = null;
+function showModal(title, message, buttons) {
+  return new Promise(resolve => {
+    currentResolve = resolve;
+    document.getElementById('modalHeader').textContent = title;
+    document.getElementById('modalBody').innerHTML = message;
+    const footer = document.getElementById('modalFooter');
+    footer.innerHTML = '';
+    buttons.forEach(btn => {
+      const button = document.createElement('button');
+      button.textContent = btn.text;
+      button.className = `px-6 py-3 rounded-2xl font-medium ${btn.style}`;
+      button.onclick = () => { closeModal(); resolve(btn.value); };
+      footer.appendChild(button);
+    });
+    document.getElementById('modal').classList.remove('hidden');
+  });
+}
+function closeModal() { document.getElementById('modal').classList.add('hidden'); }
+function showAlert(message) { return showModal("Уведомление", `<p class="text-lg">${message}</p>`, [{ text: "OK", style: "bg-blue-600 text-white", value: true }]); }
+function showConfirm(message) {
+  return showModal("Подтверждение", `<p class="text-lg">${message}</p>`, [
+    { text: "Отмена", style: "bg-gray-200", value: false },
+    { text: "ОК", style: "bg-red-600 text-white", value: true }
+  ]);
+}
+// ==================== ПЕРЕМЕННЫЕ ====================
+let transactions = [];
+let filteredTransactions = [];
+const ROWS_PER_PAGE = 15;
+let currentPage = 1;
+let pieChartInstance = null;
+let barChartInstance = null;
+const STORAGE_KEY = 'myFinanceTransactions';
+let currentCategoryFilter = '';
+let currentMonthFilter = '';
+function loadSavedData() {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) {
+    transactions = JSON.parse(saved);
+    filteredTransactions = [...transactions];
+  }
+  renderAll();
+}
+function saveData() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(transactions));
+  exportData(); // автоматический сброс всех данных в один JSON-файл (фон)
+}
+// ==================== ФОНОВОЕ ВЗАИМОДЕЙСТВИЕ С JSON-ФАЙЛОМ ====================
+// (ничего не меняется в интерфейсе сайта — всё происходит полностью в фоне)
+function exportData() {
+  if (transactions.length === 0) return;
+  const dataStr = JSON.stringify(transactions, null, 2);
+  const blob = new Blob([dataStr], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'my_finance_transactions.json';
+  link.click();
+  URL.revokeObjectURL(url);
+}
+// скрытый input для загрузки JSON (создаётся программно, на странице не виден)
+let jsonInput = null;
+function initJsonLoader() {
+  jsonInput = document.createElement('input');
+  jsonInput.type = 'file';
+  jsonInput.accept = '.json';
+  jsonInput.style.display = 'none';
+  document.body.appendChild(jsonInput);
+  jsonInput.addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = async function(event) {
+      try {
+        const loadedTransactions = JSON.parse(event.target.result);
+        if (!Array.isArray(loadedTransactions)) throw new Error();
+        const replace = await showConfirm(`Найдено ${loadedTransactions.length} операций.<br><br>Заменить все данные или добавить?`);
+        if (replace) transactions = loadedTransactions;
+        else transactions = [...transactions, ...loadedTransactions];
+        saveData();
+        filteredTransactions = [...transactions];
+        currentPage = 1;
+        currentCategoryFilter = '';
+        currentMonthFilter = '';
+        renderAll();
+        await showAlert(`✅ Успешно загружено ${loadedTransactions.length} операций!`);
+      } catch (err) {
+        await showAlert('Неверный формат JSON файла.');
+      }
+      e.target.value = '';
+    };
+    reader.readAsText(file);
+  });
+}
+// чтобы загрузить отредактированный JSON — откройте консоль (F12) и введите: triggerJsonLoad()
+window.triggerJsonLoad = function() {
+  if (jsonInput) jsonInput.click();
+};
+// ==================== CSV ПАРСЕР ====================
+document.getElementById('csvFile').addEventListener('change', function(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  Papa.parse(file, {
+    header: true,
+    skipEmptyLines: true,
+    complete: async function(results) {
+      const newTransactions = results.data.map(row => {
+        let dateStr = (row.operationDate || row.transactionDate || '').trim();
+        if (dateStr.includes('.')) {
+          const [day, month, year] = dateStr.split('.');
+          dateStr = `${year}-${month.padStart(2,'0')}-${day.padStart(2,'0')}`;
+        }
+        let rawAmount = parseFloat(row.amount) || 0;
+        const type = (row.type || '').trim();
+        let finalAmount = rawAmount;
+        if (type === "Списание") finalAmount = -Math.abs(rawAmount);
+        else if (type === "Пополнение") finalAmount = Math.abs(rawAmount);
+        return {
+          id: crypto.randomUUID(),
+          date: dateStr,
+          description: '—',
+          account: (row.merchant || '—').trim(),
+          amount: finalAmount,
+          category: (row.category || 'Без категории').trim()
+        };
+      }).filter(t => t.date && !isNaN(t.amount));
+      if (newTransactions.length === 0) {
+        await showAlert('Не удалось прочитать транзакции.');
+        return;
+      }
+      const replace = await showConfirm(`Найдено ${newTransactions.length} операций.<br><br>Заменить все данные или добавить?`);
+      if (replace) transactions = newTransactions;
+      else transactions = [...transactions, ...newTransactions];
+      saveData();
+      filteredTransactions = [...transactions];
+      currentPage = 1;
+      currentCategoryFilter = '';
+      currentMonthFilter = '';
+      renderAll();
+      await showAlert(`✅ Успешно загружено ${newTransactions.length} операций!`);
+      e.target.value = '';
+    }
+  });
+});
+function addTransaction() {
+  const date = document.getElementById('dateInput').value;
+  const desc = document.getElementById('descInput').value.trim() || '—';
+  const account = document.getElementById('accountInput').value.trim() || '—';
+  const amount = parseFloat(document.getElementById('amountInput').value);
+  const cat = document.getElementById('catInput').value.trim() || 'Без категории';
+  if (!date || isNaN(amount)) return showAlert('Заполните дату и сумму!');
+  transactions.push({
+    id: crypto.randomUUID(),
+    date,
+    description: desc,
+    account,
+    amount,
+    category: cat
+  });
+  saveData();
+  filteredTransactions = [...transactions];
+  currentPage = 1;
+  renderAll();
+}
+// ==================== Редактирование и удаление ====================
+async function editTransaction(id) {
+  const trans = transactions.find(t => String(t.id) === String(id));
+  if (!trans) return;
+  const modalHTML = `
+    <div class="grid grid-cols-1 gap-4">
+      <div><label class="block text-sm text-gray-600 mb-1">Дата</label><input id="editDate" type="date" value="${trans.date}" class="w-full px-4 py-3 border rounded-2xl"></div>
+      <div><label class="block text-sm text-gray-600 mb-1">Описание</label><input id="editDesc" type="text" value="${trans.description}" class="w-full px-4 py-3 border rounded-2xl"></div>
+      <div><label class="block text-sm text-gray-600 mb-1">Счёт / Получатель</label><input id="editAccount" type="text" value="${trans.account}" class="w-full px-4 py-3 border rounded-2xl"></div>
+      <div><label class="block text-sm text-gray-600 mb-1">Сумма</label><input id="editAmount" type="number" step="0.01" value="${trans.amount}" class="w-full px-4 py-3 border rounded-2xl"></div>
+      <div>
+        <label class="block text-sm text-gray-600 mb-1">Категория</label>
+        <select id="editCategorySelect" class="w-full px-4 py-3 border rounded-2xl">
+          ${[...new Set(transactions.map(t => t.category))].sort().map(cat =>
+            `<option value="${cat}" ${cat === trans.category ? 'selected' : ''}>${cat}</option>`).join('')}
+        </select>
+        <input id="editNewCategory" type="text" placeholder="Новое название категории" class="w-full px-4 py-3 border rounded-2xl mt-2">
+      </div>
+    </div>
+  `;
+  const saveResult = await showModal("Редактировать транзакцию", modalHTML, [
+    { text: "Отмена", style: "bg-gray-200", value: false },
+    { text: "Сохранить", style: "bg-green-600 text-white", value: true }
+  ]);
+  if (!saveResult) return;
+  const newDate = document.getElementById('editDate').value;
+  const newDesc = document.getElementById('editDesc').value.trim() || '—';
+  const newAccount = document.getElementById('editAccount').value.trim() || '—';
+  const newAmount = parseFloat(document.getElementById('editAmount').value);
+  if (isNaN(newAmount)) return await showAlert('Сумма должна быть числом!');
+  let newCat = document.getElementById('editCategorySelect').value;
+  const manualCat = document.getElementById('editNewCategory').value.trim();
+  if (manualCat) newCat = manualCat;
+  const applyToAll = await showModal("Применить изменения", `<p class="text-lg">Куда применить изменения?</p>`, [
+    { text: "Только для этой транзакции", style: "bg-gray-200", value: false },
+    { text: `Для всех с получателем "${trans.account}"`, style: "bg-blue-600 text-white", value: true }
+  ]);
+  if (applyToAll) {
+    transactions.forEach(t => {
+      if (t.account === trans.account) {
+        t.account = newAccount;
+        t.category = newCat;
+      }
+    });
+  } else {
+    trans.account = newAccount;
+    trans.category = newCat;
+  }
+  trans.date = newDate;
+  trans.description = newDesc;
+  trans.amount = newAmount;
+  saveData();
+  renderAll();
+}
+function deleteTransaction(id) {
+  showConfirm('Удалить эту транзакцию?').then(confirmed => {
+    if (confirmed) {
+      transactions = transactions.filter(t => String(t.id) !== String(id));
+      saveData();
+      filteredTransactions = [...transactions];
+      currentPage = 1;
+      renderAll();
+    }
+  });
+}
+// ==================== РЕНДЕР ТАБЛИЦЫ (ИСПРАВЛЕННЫЙ ОСТАТОК) ====================
+function renderTable() {
+  const tbody = document.getElementById('tableBody');
+  const start = (currentPage - 1) * ROWS_PER_PAGE;
+  const end = start + ROWS_PER_PAGE;
+  if (currentPage === 1) tbody.innerHTML = '';
+  const toRender = filteredTransactions.slice(start, end);
+  const runningBalances = new Array(filteredTransactions.length);
+  let suffix = 0;
+  for (let i = filteredTransactions.length - 1; i >= 0; i--) {
+    suffix += Number(filteredTransactions[i].amount);
+    runningBalances[i] = suffix;
+  }
+  toRender.forEach((t, index) => {
+    const rowIndex = start + index;
+    const currentBalance = runningBalances[rowIndex];
+    const row = document.createElement('tr');
+    row.className = 'hover:bg-gray-50';
+    row.innerHTML = `
+      <td class="px-6 py-4">${t.date}</td>
+      <td class="px-6 py-4 text-gray-600">${t.description}</td>
+      <td class="px-6 py-4">${t.account}</td>
+      <td class="px-6 py-4"><span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm">${t.category}</span></td>
+      <td class="px-6 py-4 text-right font-medium ${t.amount >= 0 ? 'text-green-600' : 'text-red-600'}">
+        ${t.amount >= 0 ? '+' : ''}${Number(t.amount).toLocaleString('ru-RU')} ₽
+      </td>
+      <td class="px-6 py-4 text-right font-medium text-gray-500">
+        ${Number(currentBalance).toLocaleString('ru-RU')} ₽
+      </td>
+      <td class="px-6 py-4 text-center">
+        <button class="edit-btn text-blue-600 hover:text-blue-800 mx-2" data-id="${t.id}"><i class="fas fa-edit"></i></button>
+        <button class="delete-btn text-red-600 hover:text-red-800" data-id="${t.id}"><i class="fas fa-trash"></i></button>
+      </td>
+    `;
+    tbody.appendChild(row);
+  });
+  document.querySelectorAll('.edit-btn').forEach(btn => btn.onclick = () => editTransaction(btn.dataset.id));
+  document.querySelectorAll('.delete-btn').forEach(btn => btn.onclick = () => deleteTransaction(btn.dataset.id));
+  document.getElementById('loadMoreBtn').classList.toggle('hidden', end >= filteredTransactions.length);
+}
+// ==================== Фильтры, сводка, графики ====================
+function renderCategoryFilter() {
+  const select = document.getElementById('categoryFilter');
+  const cats = [...new Set(transactions.map(t => t.category))].sort();
+  let html = '<option value="">Все категории</option>';
+  cats.forEach(c => html += `<option value="${c}" ${c === currentCategoryFilter ? 'selected' : ''}>${c}</option>`);
+  select.innerHTML = html;
+}
+function renderMonthFilter() {
+  const select = document.getElementById('monthFilter');
+  const months = [...new Set(transactions.map(t => t.date.substring(0,7)))].sort().reverse();
+  let html = '<option value="">Все месяцы</option>';
+  months.forEach(m => {
+    const [year, monthNum] = m.split('-');
+    const monthName = new Date(year, parseInt(monthNum)-1, 1).toLocaleString('ru-RU', { month: 'long' });
+    html += `<option value="${m}" ${m === currentMonthFilter ? 'selected' : ''}>${monthName} ${year}</option>`;
+  });
+  select.innerHTML = html;
+}
+function filterData() {
+  currentCategoryFilter = document.getElementById('categoryFilter').value;
+  currentMonthFilter = document.getElementById('monthFilter').value;
+  const term = document.getElementById('search').value.toLowerCase().trim();
+  filteredTransactions = transactions.filter(t => {
+    const matchSearch = (t.description || '').toLowerCase().includes(term) ||
+                        (t.account || '').toLowerCase().includes(term);
+    const matchCat = !currentCategoryFilter || t.category === currentCategoryFilter;
+    const matchMonth = !currentMonthFilter || t.date.startsWith(currentMonthFilter);
+    return matchSearch && matchCat && matchMonth;
+  });
+  currentPage = 1;
+  renderAll();
+}
+function resetFilters() {
+  document.getElementById('search').value = '';
+  currentCategoryFilter = '';
+  currentMonthFilter = '';
+  filteredTransactions = [...transactions];
+  currentPage = 1;
+  renderAll();
+}
+function renderSummaryCards() {
+  const income = filteredTransactions.filter(t => t.amount > 0).reduce((s, t) => s + t.amount, 0);
+  const expense = filteredTransactions.filter(t => t.amount < 0).reduce((s, t) => s + Math.abs(t.amount), 0);
+  const balance = filteredTransactions.reduce((sum, t) => sum + t.amount, 0);
+  document.getElementById('summaryCards').innerHTML = `
+    <div class="bg-white rounded-3xl shadow p-6 text-center border border-green-200">
+      <div class="text-green-600 text-sm font-medium">ПРИХОД</div>
+      <div class="text-4xl font-bold text-green-600">${income.toLocaleString('ru-RU')} ₽</div>
+    </div>
+    <div class="bg-white rounded-3xl shadow p-6 text-center border border-red-200">
+      <div class="text-red-600 text-sm font-medium">РАСХОД</div>
+      <div class="text-4xl font-bold text-red-600">${expense.toLocaleString('ru-RU')} ₽</div>
+    </div>
+    <div class="bg-white rounded-3xl shadow p-6 text-center border border-blue-200">
+      <div class="text-gray-600 text-sm font-medium">БАЛАНС</div>
+      <div class="text-4xl font-bold ${balance >= 0 ? 'text-blue-600' : 'text-red-600'}">${balance.toLocaleString('ru-RU')} ₽</div>
+    </div>
+  `;
+}
+function renderPieChart() {
+  if (pieChartInstance) pieChartInstance.destroy();
+  const ctx = document.getElementById('pieChart');
+  const byCat = {};
+  filteredTransactions.filter(t => t.amount < 0).forEach(t => {
+    byCat[t.category] = (byCat[t.category] || 0) + Math.abs(t.amount);
+  });
+  pieChartInstance = new Chart(ctx, {
+    type: 'doughnut',
+    data: { labels: Object.keys(byCat), datasets: [{ data: Object.values(byCat), backgroundColor: ['#ef4444','#f59e0b','#10b981','#3b82f6','#8b5cf6'] }] },
+    options: { responsive: true, plugins: { legend: { position: 'bottom' } }}
+  });
+}
+function renderBarChart() {
+  if (barChartInstance) barChartInstance.destroy();
+  const ctx = document.getElementById('barChart');
+  const monthly = {};
+  filteredTransactions.forEach(t => {
+    const m = t.date.substring(0,7);
+    if (!monthly[m]) monthly[m] = {i:0, e:0};
+    if (t.amount > 0) monthly[m].i += t.amount;
+    else monthly[m].e += Math.abs(t.amount);
+  });
+  const labels = Object.keys(monthly).sort();
+  barChartInstance = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        { label: 'Приход', data: labels.map(m => monthly[m].i), backgroundColor: '#10b981' },
+        { label: 'Расход', data: labels.map(m => monthly[m].e), backgroundColor: '#ef4444' }
+      ]
+    },
+    options: { responsive: true, scales: { y: { beginAtZero: true } } }
+  });
+}
+function renderAll() {
+  renderSummaryCards();
+  renderCategoryFilter();
+  renderMonthFilter();
+  renderTable();
+  renderPieChart();
+  renderBarChart();
+}
+function loadMore() {
+  currentPage++;
+  renderTable();
+}
+// ==================== Обработчики ====================
+document.getElementById('search').oninput = filterData;
+document.getElementById('categoryFilter').onchange = filterData;
+document.getElementById('monthFilter').onchange = filterData;
+initJsonLoader(); // инициализация фонового JSON-загрузчика
+loadSavedData();
+</script>
+</body>
+</html>
