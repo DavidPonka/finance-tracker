@@ -90,7 +90,7 @@
   {
     "id": "da8e8835-72ed-4c03-85b3-fdc4938be443",
     "date": "2026-03-24",
-    "description": "—",
+    "description": "Возврат",
     "account": "Между своими счетами",
     "amount": 180,
     "category": "Пополнения"
@@ -98,18 +98,18 @@
   {
     "id": "70284fc1-3033-432f-8439-3878c2cb5955",
     "date": "2026-03-24",
-    "description": "—",
-    "account": "ПАО СБЕРБАНК, ИНН 7707083893",
+    "description": "Личные траты",
+    "account": "Монетка",
     "amount": -179.98,
-    "category": "Прочие расходы"
+    "category": "Продукты"
   },
   {
     "id": "a859eaae-1f84-4103-9fd8-713d29395bd1",
     "date": "2026-03-22",
     "description": "—",
-    "account": "ПАО СБЕРБАНК, ИНН 7707083893",
+    "account": "Монетка",
     "amount": -279.98,
-    "category": "Прочие расходы"
+    "category": "Продукты"
   },
   {
     "id": "9a98ca7e-8fed-48fc-a4f6-863834a6fb2c",
@@ -146,7 +146,7 @@
   {
     "id": "5d43e646-71c8-4014-88bb-0188f1708127",
     "date": "2026-03-17",
-    "description": "—",
+    "description": "Ремень с OZON",
     "account": "Нэсп без идентификации Д",
     "amount": -219,
     "category": "Прочие расходы"
@@ -170,15 +170,15 @@
   {
     "id": "9b699ee0-e7a0-4277-a492-0ae98136ecd2",
     "date": "2026-03-16",
-    "description": "—",
-    "account": "ПАО СБЕРБАНК, ИНН 7707083893",
+    "description": "Личные траты",
+    "account": "Монетка",
     "amount": -134.98,
-    "category": "Прочие расходы"
+    "category": "Продукты"
   },
   {
     "id": "ef4185f6-e447-4446-8c1d-3442855c4c69",
     "date": "2026-03-15",
-    "description": "—",
+    "description": "Возврат",
     "account": "Между своими счетами",
     "amount": 200,
     "category": "Пополнения"
@@ -187,9 +187,9 @@
     "id": "69650f75-722a-48a1-a67b-d8e31a79f4fa",
     "date": "2026-03-15",
     "description": "—",
-    "account": "ПАО СБЕРБАНК, ИНН 7707083893",
+    "account": "Монетка",
     "amount": -91.8,
-    "category": "Прочие расходы"
+    "category": "Продукты"
   },
   {
     "id": "ca3338da-112f-434a-a3ef-f6ae4f66569a",
@@ -205,7 +205,7 @@
     "description": "—",
     "account": "Андрей З.",
     "amount": -460,
-    "category": "Финансовые операции"
+    "category": "На 8 марта"
   },
   {
     "id": "4af94b6c-8df7-4cee-b979-5175c9bacc83",
@@ -274,18 +274,18 @@
   {
     "id": "8f99660d-0795-469a-b9e1-1f5f5f50d014",
     "date": "2026-03-05",
-    "description": "—",
+    "description": "На 8 марта",
     "account": "Андрей З.",
     "amount": -1115,
-    "category": "Финансовые операции"
+    "category": "Подарки"
   },
   {
     "id": "1eb29c0d-4b73-41cb-b0da-925b9231bcb0",
     "date": "2026-03-05",
-    "description": "—",
+    "description": "На 8 марта",
     "account": "Павел Г.",
     "amount": -667,
-    "category": "Финансовые операции"
+    "category": "Подарки"
   },
   {
     "id": "76a14a13-1e52-4e1e-98f1-7ab8e8594f8b",
@@ -322,10 +322,10 @@
   {
     "id": "f26f54eb-10a0-44bd-91ca-312e1da73165",
     "date": "2026-03-03",
-    "description": "—",
+    "description": "На 8 марта",
     "account": "Андрей З.",
     "amount": -200,
-    "category": "Финансовые операции"
+    "category": "Подарки"
   },
   {
     "id": "006ca802-b1d7-4e2b-9060-e0125623fb02",
@@ -347,17 +347,17 @@
     "id": "f0cc8027-e08b-4956-9c4a-7308aefc635c",
     "date": "2026-03-02",
     "description": "—",
-    "account": "ПАО СБЕРБАНК, ИНН 7707083893",
+    "account": "Монетка",
     "amount": -9.99,
-    "category": "Прочие расходы"
+    "category": "Продукты"
   },
   {
     "id": "e74d904b-2fb0-4886-9bb3-72f9b6184e86",
     "date": "2026-03-02",
     "description": "—",
-    "account": "ПАО СБЕРБАНК, ИНН 7707083893",
+    "account": "Монетка",
     "amount": -264.98,
-    "category": "Прочие расходы"
+    "category": "Продукты"
   },
   {
     "id": "157aad7f-6677-4512-bcd5-80b16328906c",
@@ -402,7 +402,7 @@
   {
     "id": "6932939f-d3e4-4fc9-b060-738ff9c2b50e",
     "date": "2026-02-26",
-    "description": "—",
+    "description": "Возврат, тк стельки стоили 50 рублей",
     "account": "Между своими счетами",
     "amount": 150,
     "category": "Пополнения"
@@ -410,7 +410,7 @@
   {
     "id": "3ef29ec8-f966-4fbe-8e72-f8f16bbea67c",
     "date": "2026-02-25",
-    "description": "—",
+    "description": "На стельки",
     "account": "Между своими счетами",
     "amount": -200,
     "category": "Прочие расходы"
@@ -499,17 +499,17 @@
     "id": "58d6a827-bc45-4f2b-9179-b616d7a8781d",
     "date": "2026-02-17",
     "description": "—",
-    "account": "ПАО СБЕРБАНК, ИНН 7707083893",
+    "account": "Монетка",
     "amount": -93.9,
-    "category": "Прочие расходы"
+    "category": "Продукты"
   },
   {
     "id": "82666d89-62d1-4b8c-9a6e-ccf8f6eead8b",
     "date": "2026-02-13",
     "description": "—",
-    "account": "Между своими счетами",
+    "account": "Зубы",
     "amount": -5400,
-    "category": "Прочие расходы"
+    "category": "Больница"
   },
   {
     "id": "c86573e7-3f13-4d7d-84c1-a5e9f58f8313",
@@ -522,7 +522,7 @@
   {
     "id": "0a6c5ee4-4571-4a96-946f-4e3b11e8dade",
     "date": "2026-02-13",
-    "description": "—",
+    "description": "На поездку",
     "account": "Между своими счетами",
     "amount": -1700,
     "category": "Прочие расходы"
@@ -562,7 +562,7 @@
   {
     "id": "0007c7e3-12e7-4584-a851-062804aa6b66",
     "date": "2026-02-10",
-    "description": "—",
+    "description": "возврат",
     "account": "Между своими счетами",
     "amount": 480,
     "category": "Пополнения"
@@ -570,15 +570,15 @@
   {
     "id": "478b1e92-b280-4b54-bb8c-731f448d95e3",
     "date": "2026-02-06",
-    "description": "—",
-    "account": "ПАО СБЕРБАНК, ИНН 7707083893",
+    "description": "480 из них на личное",
+    "account": "Монетка",
     "amount": -569.95,
-    "category": "Прочие расходы"
+    "category": "Продукты"
   },
   {
     "id": "5572fe01-f005-4019-b333-3eef017b19db",
     "date": "2026-02-06",
-    "description": "—",
+    "description": "Личные траты - Возврат предыдущей транз",
     "account": "Между своими счетами",
     "amount": 90,
     "category": "Пополнения"
@@ -626,7 +626,7 @@
   {
     "id": "568e2b73-cdd8-457b-b9b6-9582ba8c5726",
     "date": "2026-02-03",
-    "description": "—",
+    "description": "Личное",
     "account": "Между своими счетами",
     "amount": -1000,
     "category": "Прочие расходы"
@@ -642,7 +642,7 @@
   {
     "id": "effc2e99-9fc9-474d-bf7a-56ad8f623644",
     "date": "2026-02-03",
-    "description": "—",
+    "description": "в копилку",
     "account": "Давид Дмитриевич П",
     "amount": -1000,
     "category": "Прочие расходы"
@@ -650,7 +650,7 @@
   {
     "id": "4807aba2-8b03-490d-8713-6141d51bb443",
     "date": "2026-02-03",
-    "description": "—",
+    "description": "Лишние 2000 перекинул",
     "account": "Между своими счетами",
     "amount": 4000,
     "category": "Пополнения"
@@ -667,17 +667,17 @@
     "id": "b4a87676-78b4-4434-b5be-650be1507f4a",
     "date": "2026-01-31",
     "description": "—",
-    "account": "ПАО СБЕРБАНК, ИНН 7707083893",
+    "account": "Монетка",
     "amount": -319.98,
-    "category": "Прочие расходы"
+    "category": "Продукты"
   },
   {
     "id": "9cc8c7fc-34f8-42a7-8eae-7f9f8e738273",
     "date": "2026-01-31",
     "description": "—",
-    "account": "ПАО СБЕРБАНК, ИНН 7707083893",
+    "account": "Монетка",
     "amount": -62.98,
-    "category": "Прочие расходы"
+    "category": "Продукты"
   },
   {
     "id": "3e61e090-d7a6-47c8-abf9-279987007e6e",
@@ -722,7 +722,7 @@
   {
     "id": "8d07bba8-0a19-46c5-b5eb-90b6c84b0f20",
     "date": "2026-01-26",
-    "description": "—",
+    "description": "Предыдущая монетка на 130 рублей личное",
     "account": "Между своими счетами",
     "amount": 130,
     "category": "Пополнения"
@@ -738,15 +738,15 @@
   {
     "id": "b7089202-1902-4133-a9e1-e28be22e34a8",
     "date": "2026-01-24",
-    "description": "—",
-    "account": "ПАО СБЕРБАНК, ИНН 7707083893",
+    "description": "500 - личные траты",
+    "account": "Монетка",
     "amount": -624.97,
-    "category": "Прочие расходы"
+    "category": "Продукты"
   },
   {
     "id": "fa84057a-a666-40e5-b302-ea2c99ff5644",
     "date": "2026-01-24",
-    "description": "—",
+    "description": "Возврат",
     "account": "Между своими счетами",
     "amount": 500,
     "category": "Пополнения"
@@ -786,7 +786,7 @@
   {
     "id": "4e98dbbb-c884-4b35-8397-4fbf98e0f77e",
     "date": "2026-01-19",
-    "description": "—",
+    "description": "Библейка + др кого-то",
     "account": "Яна З.",
     "amount": -1100,
     "category": "Молодежка"
@@ -811,9 +811,9 @@
     "id": "faf25c17-dde2-4152-b8f9-37e141e41667",
     "date": "2026-01-19",
     "description": "—",
-    "account": "ПАО СБЕРБАНК, ИНН 7707083893",
+    "account": "Монетка",
     "amount": -174,
-    "category": "Прочие расходы"
+    "category": "Продукты"
   },
   {
     "id": "e2b90039-dcd1-426d-862d-2b31cd549e97",
@@ -826,7 +826,7 @@
   {
     "id": "aefd0a5b-de21-44ad-aa7e-d4043029af57",
     "date": "2026-01-15",
-    "description": "—",
+    "description": "OZON для гитары в церковь",
     "account": "Нэсп без идентификации Д",
     "amount": -185,
     "category": "Прочие расходы"
@@ -842,7 +842,7 @@
   {
     "id": "22adee1c-8165-406c-941b-aa9752c9bcb6",
     "date": "2026-01-15",
-    "description": "—",
+    "description": "OZON - бытовые вещи",
     "account": "Нэсп без идентификации Д",
     "amount": -475,
     "category": "Прочие расходы"
@@ -882,15 +882,15 @@
   {
     "id": "1fe48d30-200a-4423-ac75-80a23617ad1b",
     "date": "2026-01-12",
-    "description": "—",
+    "description": "Возврат",
     "account": "Между своими счетами",
     "amount": 232,
-    "category": "Пополнения"
+    "category": "Прочие расходы"
   },
   {
     "id": "32d30dac-aa14-453d-804e-c956e7534196",
     "date": "2026-01-11",
-    "description": "—",
+    "description": "Ошибка",
     "account": "Давид Дмитриевич П",
     "amount": -232,
     "category": "Прочие расходы"
@@ -915,9 +915,9 @@
     "id": "814acb84-529b-4fe6-9417-757870a40cbe",
     "date": "2026-01-06",
     "description": "—",
-    "account": "Между своими счетами",
+    "account": "Монетка",
     "amount": -300,
-    "category": "Прочие расходы"
+    "category": "Продукты"
   },
   {
     "id": "e33ab668-6c40-46cd-954e-5b35962a1901",
