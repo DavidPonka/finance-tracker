@@ -24,16 +24,34 @@
     <div id="modalFooter" class="px-6 py-4 border-t flex justify-end gap-3"></div>
   </div>
 </div>
+
 <div class="max-w-7xl mx-auto p-6">
   <h1 class="text-4xl font-bold text-gray-800 mb-8 flex items-center gap-3">
     <i class="fas fa-wallet text-blue-600"></i> Анализ моих финансов
   </h1>
+
+  <!-- Управление данными -->
+  <div class="bg-white rounded-2xl shadow p-6 mb-8">
+    <h2 class="text-2xl font-semibold mb-4">Сохранить / Загрузить данные</h2>
+    <div class="flex flex-wrap gap-4">
+      <button onclick="downloadJSON()" 
+              class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-medium flex items-center gap-2">
+        <i class="fas fa-download"></i> Скачать все данные (JSON)
+      </button>
+      <label class="px-8 py-3 bg-violet-600 hover:bg-violet-700 text-white rounded-xl font-medium flex items-center gap-2 cursor-pointer">
+        <i class="fas fa-upload"></i> Загрузить данные из JSON
+        <input type="file" id="jsonFile" accept=".json" class="hidden">
+      </label>
+    </div>
+  </div>
+
   <!-- Загрузка CSV -->
   <div class="bg-white rounded-2xl shadow p-6 mb-8">
     <h2 class="text-2xl font-semibold mb-4">Загрузить выписку из банка</h2>
     <input type="file" id="csvFile" accept=".csv"
            class="block w-full text-sm text-gray-500 file:mr-4 file:py-3 file:px-6 file:rounded-xl file:border-0 file:text-sm file:font-medium file:bg-blue-600 file:text-white hover:file:bg-blue-700">
   </div>
+
   <!-- Ручное добавление -->
   <div class="bg-white rounded-2xl shadow p-6 mb-8">
     <h2 class="text-xl font-semibold mb-4">Добавить транзакцию вручную</h2>
@@ -48,8 +66,10 @@
       <i class="fas fa-plus"></i> Добавить транзакцию
     </button>
   </div>
+
   <!-- Карточки -->
   <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10" id="summaryCards"></div>
+
   <!-- Фильтры -->
   <div class="bg-white rounded-2xl shadow p-6 mb-8 flex flex-wrap gap-4 items-end">
     <input id="search" placeholder="Поиск по описанию или счёту..."
@@ -58,6 +78,7 @@
     <select id="monthFilter" class="px-4 py-3 border rounded-xl"></select>
     <button onclick="resetFilters()" class="px-6 py-3 bg-gray-200 hover:bg-gray-300 rounded-xl">Сбросить фильтры</button>
   </div>
+
   <!-- Таблица -->
   <div class="bg-white rounded-2xl shadow overflow-hidden mb-10">
     <table class="w-full">
@@ -75,11 +96,13 @@
       <tbody id="tableBody" class="divide-y"></tbody>
     </table>
   </div>
+
   <div class="flex justify-center mb-10">
     <button id="loadMoreBtn" onclick="loadMore()" class="hidden px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-medium">
       Показать ещё 15 операций
     </button>
   </div>
+
   <!-- Графики -->
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
     <div class="bg-white rounded-2xl shadow p-6">
@@ -91,12 +114,14 @@
       <canvas id="barChart" height="320"></canvas>
     </div>
   </div>
+
   <div class="flex justify-center">
     <button onclick="clearAllData()" class="px-8 py-4 bg-red-600 hover:bg-red-700 text-white rounded-2xl font-medium flex items-center gap-3 shadow-lg">
       <i class="fas fa-trash-alt"></i> Сбросить все данные
     </button>
   </div>
 </div>
+
 <script>
 // ==================== МОДАЛЬНЫЕ ОКНА ====================
 let currentResolve = null;
@@ -125,6 +150,7 @@ function showConfirm(message) {
     { text: "ОК", style: "bg-red-600 text-white", value: true }
   ]);
 }
+
 // ==================== ПЕРЕМЕННЫЕ ====================
 let transactions = [];
 let filteredTransactions = [];
@@ -132,25 +158,27 @@ const ROWS_PER_PAGE = 15;
 let currentPage = 1;
 let pieChartInstance = null;
 let barChartInstance = null;
-const STORAGE_KEY = 'myFinanceTransactions';
 let currentCategoryFilter = '';
 let currentMonthFilter = '';
+
+// ==================== СОХРАНЕНИЕ / ЗАГРУЗКА ====================
 function loadSavedData() {
-  const saved = localStorage.getItem(STORAGE_KEY);
-  if (saved) {
-    transactions = JSON.parse(saved);
-    filteredTransactions = [...transactions];
-  }
+  transactions = [];
+  filteredTransactions = [];
   renderAll();
 }
+
 function saveData() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(transactions));
-  exportData(); // автоматический сброс всех данных в один JSON-файл (фон)
+  // Только сохраняем в localStorage, без автоскачивания
+  localStorage.setItem('myFinanceTransactions', JSON.stringify(transactions));
 }
-// ==================== ФОНОВОЕ ВЗАИМОДЕЙСТВИЕ С JSON-ФАЙЛОМ ====================
-// (ничего не меняется в интерфейсе сайта — всё происходит полностью в фоне)
-function exportData() {
-  if (transactions.length === 0) return;
+
+// Скачать JSON вручную
+function downloadJSON() {
+  if (transactions.length === 0) {
+    showAlert('Нет данных для скачивания.');
+    return;
+  }
   const dataStr = JSON.stringify(transactions, null, 2);
   const blob = new Blob([dataStr], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
@@ -160,44 +188,36 @@ function exportData() {
   link.click();
   URL.revokeObjectURL(url);
 }
-// скрытый input для загрузки JSON (создаётся программно, на странице не виден)
-let jsonInput = null;
-function initJsonLoader() {
-  jsonInput = document.createElement('input');
-  jsonInput.type = 'file';
-  jsonInput.accept = '.json';
-  jsonInput.style.display = 'none';
-  document.body.appendChild(jsonInput);
-  jsonInput.addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = async function(event) {
-      try {
-        const loadedTransactions = JSON.parse(event.target.result);
-        if (!Array.isArray(loadedTransactions)) throw new Error();
-        const replace = await showConfirm(`Найдено ${loadedTransactions.length} операций.<br><br>Заменить все данные или добавить?`);
-        if (replace) transactions = loadedTransactions;
-        else transactions = [...transactions, ...loadedTransactions];
-        saveData();
-        filteredTransactions = [...transactions];
-        currentPage = 1;
-        currentCategoryFilter = '';
-        currentMonthFilter = '';
-        renderAll();
-        await showAlert(`✅ Успешно загружено ${loadedTransactions.length} операций!`);
-      } catch (err) {
-        await showAlert('Неверный формат JSON файла.');
-      }
-      e.target.value = '';
-    };
-    reader.readAsText(file);
-  });
-}
-// чтобы загрузить отредактированный JSON — откройте консоль (F12) и введите: triggerJsonLoad()
-window.triggerJsonLoad = function() {
-  if (jsonInput) jsonInput.click();
-};
+
+// Загрузка JSON
+document.getElementById('jsonFile').addEventListener('change', function(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = async function(event) {
+    try {
+      const loadedTransactions = JSON.parse(event.target.result);
+      if (!Array.isArray(loadedTransactions)) throw new Error();
+
+      const replace = await showConfirm(`Найдено ${loadedTransactions.length} операций.<br><br>Заменить все данные или добавить?`);
+      if (replace) transactions = loadedTransactions;
+      else transactions = [...transactions, ...loadedTransactions];
+
+      saveData();
+      filteredTransactions = [...transactions];
+      currentPage = 1;
+      currentCategoryFilter = '';
+      currentMonthFilter = '';
+      renderAll();
+      await showAlert(`✅ Успешно загружено ${loadedTransactions.length} операций!`);
+    } catch (err) {
+      await showAlert('Неверный формат JSON файла.');
+    }
+    e.target.value = '';
+  };
+  reader.readAsText(file);
+});
+
 // ==================== CSV ПАРСЕР ====================
 document.getElementById('csvFile').addEventListener('change', function(e) {
   const file = e.target.files[0];
@@ -226,6 +246,7 @@ document.getElementById('csvFile').addEventListener('change', function(e) {
           category: (row.category || 'Без категории').trim()
         };
       }).filter(t => t.date && !isNaN(t.amount));
+
       if (newTransactions.length === 0) {
         await showAlert('Не удалось прочитать транзакции.');
         return;
@@ -233,6 +254,7 @@ document.getElementById('csvFile').addEventListener('change', function(e) {
       const replace = await showConfirm(`Найдено ${newTransactions.length} операций.<br><br>Заменить все данные или добавить?`);
       if (replace) transactions = newTransactions;
       else transactions = [...transactions, ...newTransactions];
+
       saveData();
       filteredTransactions = [...transactions];
       currentPage = 1;
@@ -244,6 +266,7 @@ document.getElementById('csvFile').addEventListener('change', function(e) {
     }
   });
 });
+
 function addTransaction() {
   const date = document.getElementById('dateInput').value;
   const desc = document.getElementById('descInput').value.trim() || '—';
@@ -251,6 +274,7 @@ function addTransaction() {
   const amount = parseFloat(document.getElementById('amountInput').value);
   const cat = document.getElementById('catInput').value.trim() || 'Без категории';
   if (!date || isNaN(amount)) return showAlert('Заполните дату и сумму!');
+
   transactions.push({
     id: crypto.randomUUID(),
     date,
@@ -264,10 +288,12 @@ function addTransaction() {
   currentPage = 1;
   renderAll();
 }
+
 // ==================== Редактирование и удаление ====================
 async function editTransaction(id) {
   const trans = transactions.find(t => String(t.id) === String(id));
   if (!trans) return;
+
   const modalHTML = `
     <div class="grid grid-cols-1 gap-4">
       <div><label class="block text-sm text-gray-600 mb-1">Дата</label><input id="editDate" type="date" value="${trans.date}" class="w-full px-4 py-3 border rounded-2xl"></div>
@@ -284,23 +310,29 @@ async function editTransaction(id) {
       </div>
     </div>
   `;
+
   const saveResult = await showModal("Редактировать транзакцию", modalHTML, [
     { text: "Отмена", style: "bg-gray-200", value: false },
     { text: "Сохранить", style: "bg-green-600 text-white", value: true }
   ]);
+
   if (!saveResult) return;
+
   const newDate = document.getElementById('editDate').value;
   const newDesc = document.getElementById('editDesc').value.trim() || '—';
   const newAccount = document.getElementById('editAccount').value.trim() || '—';
   const newAmount = parseFloat(document.getElementById('editAmount').value);
   if (isNaN(newAmount)) return await showAlert('Сумма должна быть числом!');
+
   let newCat = document.getElementById('editCategorySelect').value;
   const manualCat = document.getElementById('editNewCategory').value.trim();
   if (manualCat) newCat = manualCat;
+
   const applyToAll = await showModal("Применить изменения", `<p class="text-lg">Куда применить изменения?</p>`, [
     { text: "Только для этой транзакции", style: "bg-gray-200", value: false },
     { text: `Для всех с получателем "${trans.account}"`, style: "bg-blue-600 text-white", value: true }
   ]);
+
   if (applyToAll) {
     transactions.forEach(t => {
       if (t.account === trans.account) {
@@ -312,12 +344,15 @@ async function editTransaction(id) {
     trans.account = newAccount;
     trans.category = newCat;
   }
+
   trans.date = newDate;
   trans.description = newDesc;
   trans.amount = newAmount;
+
   saveData();
   renderAll();
 }
+
 function deleteTransaction(id) {
   showConfirm('Удалить эту транзакцию?').then(confirmed => {
     if (confirmed) {
@@ -329,19 +364,23 @@ function deleteTransaction(id) {
     }
   });
 }
-// ==================== РЕНДЕР ТАБЛИЦЫ (ИСПРАВЛЕННЫЙ ОСТАТОК) ====================
+
+// ==================== РЕНДЕР ====================
 function renderTable() {
   const tbody = document.getElementById('tableBody');
   const start = (currentPage - 1) * ROWS_PER_PAGE;
   const end = start + ROWS_PER_PAGE;
   if (currentPage === 1) tbody.innerHTML = '';
+
   const toRender = filteredTransactions.slice(start, end);
+
   const runningBalances = new Array(filteredTransactions.length);
   let suffix = 0;
   for (let i = filteredTransactions.length - 1; i >= 0; i--) {
     suffix += Number(filteredTransactions[i].amount);
     runningBalances[i] = suffix;
   }
+
   toRender.forEach((t, index) => {
     const rowIndex = start + index;
     const currentBalance = runningBalances[rowIndex];
@@ -365,11 +404,12 @@ function renderTable() {
     `;
     tbody.appendChild(row);
   });
+
   document.querySelectorAll('.edit-btn').forEach(btn => btn.onclick = () => editTransaction(btn.dataset.id));
   document.querySelectorAll('.delete-btn').forEach(btn => btn.onclick = () => deleteTransaction(btn.dataset.id));
   document.getElementById('loadMoreBtn').classList.toggle('hidden', end >= filteredTransactions.length);
 }
-// ==================== Фильтры, сводка, графики ====================
+
 function renderCategoryFilter() {
   const select = document.getElementById('categoryFilter');
   const cats = [...new Set(transactions.map(t => t.category))].sort();
@@ -377,6 +417,7 @@ function renderCategoryFilter() {
   cats.forEach(c => html += `<option value="${c}" ${c === currentCategoryFilter ? 'selected' : ''}>${c}</option>`);
   select.innerHTML = html;
 }
+
 function renderMonthFilter() {
   const select = document.getElementById('monthFilter');
   const months = [...new Set(transactions.map(t => t.date.substring(0,7)))].sort().reverse();
@@ -388,6 +429,7 @@ function renderMonthFilter() {
   });
   select.innerHTML = html;
 }
+
 function filterData() {
   currentCategoryFilter = document.getElementById('categoryFilter').value;
   currentMonthFilter = document.getElementById('monthFilter').value;
@@ -402,6 +444,7 @@ function filterData() {
   currentPage = 1;
   renderAll();
 }
+
 function resetFilters() {
   document.getElementById('search').value = '';
   currentCategoryFilter = '';
@@ -410,10 +453,12 @@ function resetFilters() {
   currentPage = 1;
   renderAll();
 }
+
 function renderSummaryCards() {
   const income = filteredTransactions.filter(t => t.amount > 0).reduce((s, t) => s + t.amount, 0);
   const expense = filteredTransactions.filter(t => t.amount < 0).reduce((s, t) => s + Math.abs(t.amount), 0);
   const balance = filteredTransactions.reduce((sum, t) => sum + t.amount, 0);
+
   document.getElementById('summaryCards').innerHTML = `
     <div class="bg-white rounded-3xl shadow p-6 text-center border border-green-200">
       <div class="text-green-600 text-sm font-medium">ПРИХОД</div>
@@ -429,6 +474,7 @@ function renderSummaryCards() {
     </div>
   `;
 }
+
 function renderPieChart() {
   if (pieChartInstance) pieChartInstance.destroy();
   const ctx = document.getElementById('pieChart');
@@ -442,6 +488,7 @@ function renderPieChart() {
     options: { responsive: true, plugins: { legend: { position: 'bottom' } }}
   });
 }
+
 function renderBarChart() {
   if (barChartInstance) barChartInstance.destroy();
   const ctx = document.getElementById('barChart');
@@ -465,6 +512,7 @@ function renderBarChart() {
     options: { responsive: true, scales: { y: { beginAtZero: true } } }
   });
 }
+
 function renderAll() {
   renderSummaryCards();
   renderCategoryFilter();
@@ -473,15 +521,29 @@ function renderAll() {
   renderPieChart();
   renderBarChart();
 }
+
 function loadMore() {
   currentPage++;
   renderTable();
 }
+
+async function clearAllData() {
+  const confirmed = await showConfirm('Вы уверены, что хотите полностью удалить все транзакции?');
+  if (!confirmed) return;
+  transactions = [];
+  filteredTransactions = [];
+  localStorage.removeItem('myFinanceTransactions');
+  currentCategoryFilter = '';
+  currentMonthFilter = '';
+  renderAll();
+  await showAlert('Все данные успешно сброшены!');
+}
+
 // ==================== Обработчики ====================
 document.getElementById('search').oninput = filterData;
 document.getElementById('categoryFilter').onchange = filterData;
 document.getElementById('monthFilter').onchange = filterData;
-initJsonLoader(); // инициализация фонового JSON-загрузчика
+
 loadSavedData();
 </script>
 </body>
