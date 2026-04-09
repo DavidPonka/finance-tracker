@@ -14,35 +14,9 @@
       from { opacity: 0; transform: scale(0.95); }
       to { opacity: 1; transform: scale(1); }
     }
-    .floating-buttons {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      z-index: 50;
-    }
-    .floating-btn {
-      padding: 8px 14px;
-      background-color: #e5e7eb;
-      color: #4b5563;
-      font-size: 12px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      transition: all 0.2s;
-    }
-    .floating-btn:hover {
-      background-color: #d1d5db;
-      transform: translateY(-1px);
-    }
   </style>
 </head>
 <body class="bg-gray-50 font-sans">
-
 <div id="modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
   <div class="modal bg-white rounded-3xl shadow-2xl max-w-lg w-full mx-4 overflow-hidden">
     <div id="modalHeader" class="px-6 py-4 border-b font-semibold text-lg"></div>
@@ -50,19 +24,16 @@
     <div id="modalFooter" class="px-6 py-4 border-t flex justify-end gap-3"></div>
   </div>
 </div>
-
 <div class="max-w-7xl mx-auto p-6">
   <h1 class="text-4xl font-bold text-gray-800 mb-8 flex items-center gap-3">
     <i class="fas fa-wallet text-blue-600"></i> Анализ моих финансов
   </h1>
-
   <!-- Загрузка CSV -->
   <div class="bg-white rounded-2xl shadow p-6 mb-8">
     <h2 class="text-2xl font-semibold mb-4">Загрузить выписку из банка</h2>
     <input type="file" id="csvFile" accept=".csv"
            class="block w-full text-sm text-gray-500 file:mr-4 file:py-3 file:px-6 file:rounded-xl file:border-0 file:text-sm file:font-medium file:bg-blue-600 file:text-white hover:file:bg-blue-700">
   </div>
-
   <!-- Ручное добавление -->
   <div class="bg-white rounded-2xl shadow p-6 mb-8">
     <h2 class="text-xl font-semibold mb-4">Добавить транзакцию вручную</h2>
@@ -77,10 +48,8 @@
       <i class="fas fa-plus"></i> Добавить транзакцию
     </button>
   </div>
-
   <!-- Карточки -->
   <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10" id="summaryCards"></div>
-
   <!-- Фильтры -->
   <div class="bg-white rounded-2xl shadow p-6 mb-8 flex flex-wrap gap-4 items-end">
     <input id="search" placeholder="Поиск по описанию или счёту..."
@@ -89,7 +58,6 @@
     <select id="monthFilter" class="px-4 py-3 border rounded-xl"></select>
     <button onclick="resetFilters()" class="px-6 py-3 bg-gray-200 hover:bg-gray-300 rounded-xl">Сбросить фильтры</button>
   </div>
-
   <!-- Таблица -->
   <div class="bg-white rounded-2xl shadow overflow-hidden mb-10">
     <table class="w-full">
@@ -107,13 +75,11 @@
       <tbody id="tableBody" class="divide-y"></tbody>
     </table>
   </div>
-
   <div class="flex justify-center mb-10">
     <button id="loadMoreBtn" onclick="loadMore()" class="hidden px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-medium">
       Показать ещё 15 операций
     </button>
   </div>
-
   <!-- Графики -->
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
     <div class="bg-white rounded-2xl shadow p-6">
@@ -125,23 +91,17 @@
       <canvas id="barChart" height="320"></canvas>
     </div>
   </div>
-
-  <div class="flex justify-center">
-    <button onclick="clearAllData()" class="px-8 py-4 bg-red-600 hover:bg-red-700 text-white rounded-2xl font-medium flex items-center gap-3 shadow-lg">
-      <i class="fas fa-trash-alt"></i> Сбросить все данные
+  <!-- Кнопки JSON -->
+  <div class="flex justify-center gap-4 mb-8">
+    <button onclick="exportData()"
+            class="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-medium flex items-center gap-3 shadow-lg">
+      <i class="fas fa-download"></i> Экспорт данных в JSON
+    </button>
+    <button onclick="importData()"
+            class="px-8 py-4 bg-purple-600 hover:bg-purple-700 text-white rounded-2xl font-medium flex items-center gap-3 shadow-lg">
+      <i class="fas fa-upload"></i> Импорт данных из JSON
     </button>
   </div>
-</div>
-
-<!-- Маленькие серые кнопки в правом нижнем углу -->
-<div class="floating-buttons">
-  <button onclick="downloadJSON()" class="floating-btn">
-    <i class="fas fa-download"></i> Скачать JSON
-  </button>
-  <label class="floating-btn cursor-pointer">
-    <i class="fas fa-upload"></i> Загрузить JSON
-    <input type="file" id="jsonFile" accept=".json" class="hidden">
-  </label>
 </div>
 
 <script>
@@ -172,7 +132,6 @@ function showConfirm(message) {
     { text: "ОК", style: "bg-red-600 text-white", value: true }
   ]);
 }
-
 // ==================== ПЕРЕМЕННЫЕ ====================
 let transactions = [];
 let filteredTransactions = [];
@@ -180,76 +139,54 @@ const ROWS_PER_PAGE = 15;
 let currentPage = 1;
 let pieChartInstance = null;
 let barChartInstance = null;
+const STORAGE_KEY = 'myFinanceTransactions';
 let currentCategoryFilter = '';
 let currentMonthFilter = '';
 
-const JSON_FILENAME = "my_finance_transactions (4).json";   // ← Исправлено на твой реальный файл
-
-// ==================== ЗАГРУЗКА ИЗ GITHUB ====================
-async function loadFromGitHub() {
-  try {
-    const response = await fetch(JSON_FILENAME + '?t=' + Date.now());
-    if (!response.ok) throw new Error("Файл не найден");
-    const data = await response.json();
-    if (Array.isArray(data)) {
-      transactions = data;
-      filteredTransactions = [...transactions];
-      console.log(`Загружено ${transactions.length} транзакций из ${JSON_FILENAME}`);
-    }
-  } catch (e) {
-    console.log("JSON файл на GitHub не найден или пустой. Начинаем с пустого списка.");
-    transactions = [];
-    filteredTransactions = [];
-  }
-  renderAll();
-}
-
-function saveData() {
-  localStorage.setItem('myFinanceTransactions', JSON.stringify(transactions));
-}
-
-// Скачать JSON
-function downloadJSON() {
-  if (transactions.length === 0) {
-    showAlert('Нет данных для скачивания.');
-    return;
-  }
+// ==================== АВТОМАТИЧЕСКОЕ СОХРАНЕНИЕ В JSON ====================
+function autoSaveToJSON() {
+  if (transactions.length === 0) return;
   const dataStr = JSON.stringify(transactions, null, 2);
   const blob = new Blob([dataStr], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;
-  link.download = "my_finance_transactions.json";   // скачивает под удобным именем
+  link.download = 'my_finance_transactions.json';
   link.click();
   URL.revokeObjectURL(url);
 }
 
-// Загрузка JSON с компьютера
-document.getElementById('jsonFile').addEventListener('change', function(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = async function(event) {
-    try {
-      const loadedTransactions = JSON.parse(event.target.result);
-      if (!Array.isArray(loadedTransactions)) throw new Error();
-      const replace = await showConfirm(`Найдено ${loadedTransactions.length} операций.<br><br>Заменить все данные или добавить?`);
-      if (replace) transactions = loadedTransactions;
-      else transactions = [...transactions, ...loadedTransactions];
-      saveData();
-      filteredTransactions = [...transactions];
-      currentPage = 1;
-      currentCategoryFilter = '';
-      currentMonthFilter = '';
-      renderAll();
-      await showAlert(`✅ Успешно загружено ${loadedTransactions.length} операций!`);
-    } catch (err) {
-      await showAlert('Неверный формат JSON файла.');
-    }
-    e.target.value = '';
-  };
-  reader.readAsText(file);
-});
+// ==================== СОРТИРОВКА ====================
+function sortTransactions() {
+  transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+}
+
+function loadSavedData() {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) {
+    transactions = JSON.parse(saved);
+    sortTransactions();
+    filteredTransactions = [...transactions];
+  }
+  renderAll();
+}
+
+function saveData() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(transactions));
+  autoSaveToJSON();   // ← Автоматически скачивает JSON при любом изменении
+}
+
+async function clearAllData() {
+  const confirmed = await showConfirm('Вы уверены, что хотите полностью удалить все транзакции?');
+  if (!confirmed) return;
+  transactions = [];
+  filteredTransactions = [];
+  localStorage.removeItem(STORAGE_KEY);
+  currentCategoryFilter = '';
+  currentMonthFilter = '';
+  renderAll();
+  await showAlert('Все данные успешно сброшены!');
+}
 
 // ==================== CSV ПАРСЕР ====================
 document.getElementById('csvFile').addEventListener('change', function(e) {
@@ -279,7 +216,6 @@ document.getElementById('csvFile').addEventListener('change', function(e) {
           category: (row.category || 'Без категории').trim()
         };
       }).filter(t => t.date && !isNaN(t.amount));
-
       if (newTransactions.length === 0) {
         await showAlert('Не удалось прочитать транзакции.');
         return;
@@ -287,8 +223,8 @@ document.getElementById('csvFile').addEventListener('change', function(e) {
       const replace = await showConfirm(`Найдено ${newTransactions.length} операций.<br><br>Заменить все данные или добавить?`);
       if (replace) transactions = newTransactions;
       else transactions = [...transactions, ...newTransactions];
-
-      saveData();
+      sortTransactions();
+      saveData();                    // ← Автосохранение
       filteredTransactions = [...transactions];
       currentPage = 1;
       currentCategoryFilter = '';
@@ -307,7 +243,6 @@ function addTransaction() {
   const amount = parseFloat(document.getElementById('amountInput').value);
   const cat = document.getElementById('catInput').value.trim() || 'Без категории';
   if (!date || isNaN(amount)) return showAlert('Заполните дату и сумму!');
-
   transactions.push({
     id: crypto.randomUUID(),
     date,
@@ -316,7 +251,8 @@ function addTransaction() {
     amount,
     category: cat
   });
-  saveData();
+  sortTransactions();
+  saveData();                        // ← Автосохранение
   filteredTransactions = [...transactions];
   currentPage = 1;
   renderAll();
@@ -373,7 +309,8 @@ async function editTransaction(id) {
   trans.date = newDate;
   trans.description = newDesc;
   trans.amount = newAmount;
-  saveData();
+  sortTransactions();
+  saveData();                          // ← Автосохранение
   renderAll();
 }
 
@@ -381,7 +318,8 @@ function deleteTransaction(id) {
   showConfirm('Удалить эту транзакцию?').then(confirmed => {
     if (confirmed) {
       transactions = transactions.filter(t => String(t.id) !== String(id));
-      saveData();
+      sortTransactions();
+      saveData();                      // ← Автосохранение
       filteredTransactions = [...transactions];
       currentPage = 1;
       renderAll();
@@ -546,25 +484,12 @@ function loadMore() {
   renderTable();
 }
 
-async function clearAllData() {
-  const confirmed = await showConfirm('Вы уверены, что хотите полностью удалить все транзакции?');
-  if (!confirmed) return;
-  transactions = [];
-  filteredTransactions = [];
-  localStorage.removeItem('myFinanceTransactions');
-  currentCategoryFilter = '';
-  currentMonthFilter = '';
-  renderAll();
-  await showAlert('Все данные успешно сброшены!');
-}
-
 // ==================== Обработчики ====================
 document.getElementById('search').oninput = filterData;
 document.getElementById('categoryFilter').onchange = filterData;
 document.getElementById('monthFilter').onchange = filterData;
 
-// Запуск загрузки данных из файла на GitHub
-loadFromGitHub();
+loadSavedData();
 </script>
 </body>
 </html>
