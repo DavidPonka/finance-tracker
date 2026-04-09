@@ -14,9 +14,35 @@
       from { opacity: 0; transform: scale(0.95); }
       to { opacity: 1; transform: scale(1); }
     }
+    .floating-buttons {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 50;
+    }
+    .floating-btn {
+      padding: 8px 14px;
+      background-color: #e5e7eb;
+      color: #4b5563;
+      font-size: 12px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: all 0.2s;
+    }
+    .floating-btn:hover {
+      background-color: #d1d5db;
+      transform: translateY(-1px);
+    }
   </style>
 </head>
 <body class="bg-gray-50 font-sans">
+
 <div id="modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
   <div class="modal bg-white rounded-3xl shadow-2xl max-w-lg w-full mx-4 overflow-hidden">
     <div id="modalHeader" class="px-6 py-4 border-b font-semibold text-lg"></div>
@@ -29,21 +55,6 @@
   <h1 class="text-4xl font-bold text-gray-800 mb-8 flex items-center gap-3">
     <i class="fas fa-wallet text-blue-600"></i> Анализ моих финансов
   </h1>
-
-  <!-- Управление данными -->
-  <div class="bg-white rounded-2xl shadow p-6 mb-8">
-    <h2 class="text-2xl font-semibold mb-4">Сохранить / Загрузить данные</h2>
-    <div class="flex flex-wrap gap-4">
-      <button onclick="downloadJSON()" 
-              class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-medium flex items-center gap-2">
-        <i class="fas fa-download"></i> Скачать все данные (JSON)
-      </button>
-      <label class="px-8 py-3 bg-violet-600 hover:bg-violet-700 text-white rounded-xl font-medium flex items-center gap-2 cursor-pointer">
-        <i class="fas fa-upload"></i> Загрузить данные из JSON
-        <input type="file" id="jsonFile" accept=".json" class="hidden">
-      </label>
-    </div>
-  </div>
 
   <!-- Загрузка CSV -->
   <div class="bg-white rounded-2xl shadow p-6 mb-8">
@@ -122,6 +133,17 @@
   </div>
 </div>
 
+<!-- Маленькие серые кнопки в правом нижнем углу -->
+<div class="floating-buttons">
+  <button onclick="downloadJSON()" class="floating-btn">
+    <i class="fas fa-download"></i> Скачать JSON
+  </button>
+  <label class="floating-btn cursor-pointer">
+    <i class="fas fa-upload"></i> Загрузить JSON
+    <input type="file" id="jsonFile" accept=".json" class="hidden">
+  </label>
+</div>
+
 <script>
 // ==================== МОДАЛЬНЫЕ ОКНА ====================
 let currentResolve = null;
@@ -161,7 +183,7 @@ let barChartInstance = null;
 let currentCategoryFilter = '';
 let currentMonthFilter = '';
 
-// ==================== СОХРАНЕНИЕ / ЗАГРУЗКА ====================
+// ==================== СОХРАНЕНИЕ ====================
 function loadSavedData() {
   transactions = [];
   filteredTransactions = [];
@@ -169,11 +191,10 @@ function loadSavedData() {
 }
 
 function saveData() {
-  // Только сохраняем в localStorage, без автоскачивания
   localStorage.setItem('myFinanceTransactions', JSON.stringify(transactions));
 }
 
-// Скачать JSON вручную
+// Скачать JSON
 function downloadJSON() {
   if (transactions.length === 0) {
     showAlert('Нет данных для скачивания.');
