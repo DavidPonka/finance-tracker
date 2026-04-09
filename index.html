@@ -183,10 +183,26 @@ let barChartInstance = null;
 let currentCategoryFilter = '';
 let currentMonthFilter = '';
 
-// ==================== СОХРАНЕНИЕ ====================
-function loadSavedData() {
-  transactions = [];
-  filteredTransactions = [];
+// ==================== РАБОТА С JSON НА GITHUB ====================
+const JSON_FILENAME = "my_finance_transactions.json";
+
+async function loadFromGitHub() {
+  try {
+    const response = await fetch(JSON_FILENAME + '?t=' + Date.now()); // чтобы не брал из кэша
+    if (!response.ok) {
+      throw new Error("Файл не найден");
+    }
+    const data = await response.json();
+    if (Array.isArray(data)) {
+      transactions = data;
+      filteredTransactions = [...transactions];
+      console.log(`Загружено ${transactions.length} транзакций из ${JSON_FILENAME}`);
+    }
+  } catch (e) {
+    console.log("JSON файл на GitHub не найден или пустой. Начинаем с пустого списка.");
+    transactions = [];
+    filteredTransactions = [];
+  }
   renderAll();
 }
 
@@ -205,12 +221,12 @@ function downloadJSON() {
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;
-  link.download = 'my_finance_transactions.json';
+  link.download = JSON_FILENAME;
   link.click();
   URL.revokeObjectURL(url);
 }
 
-// Загрузка JSON
+// Загрузка JSON с компьютера
 document.getElementById('jsonFile').addEventListener('change', function(e) {
   const file = e.target.files[0];
   if (!file) return;
@@ -219,11 +235,9 @@ document.getElementById('jsonFile').addEventListener('change', function(e) {
     try {
       const loadedTransactions = JSON.parse(event.target.result);
       if (!Array.isArray(loadedTransactions)) throw new Error();
-
       const replace = await showConfirm(`Найдено ${loadedTransactions.length} операций.<br><br>Заменить все данные или добавить?`);
       if (replace) transactions = loadedTransactions;
       else transactions = [...transactions, ...loadedTransactions];
-
       saveData();
       filteredTransactions = [...transactions];
       currentPage = 1;
@@ -314,7 +328,6 @@ function addTransaction() {
 async function editTransaction(id) {
   const trans = transactions.find(t => String(t.id) === String(id));
   if (!trans) return;
-
   const modalHTML = `
     <div class="grid grid-cols-1 gap-4">
       <div><label class="block text-sm text-gray-600 mb-1">Дата</label><input id="editDate" type="date" value="${trans.date}" class="w-full px-4 py-3 border rounded-2xl"></div>
@@ -331,29 +344,23 @@ async function editTransaction(id) {
       </div>
     </div>
   `;
-
   const saveResult = await showModal("Редактировать транзакцию", modalHTML, [
     { text: "Отмена", style: "bg-gray-200", value: false },
     { text: "Сохранить", style: "bg-green-600 text-white", value: true }
   ]);
-
   if (!saveResult) return;
-
   const newDate = document.getElementById('editDate').value;
   const newDesc = document.getElementById('editDesc').value.trim() || '—';
   const newAccount = document.getElementById('editAccount').value.trim() || '—';
   const newAmount = parseFloat(document.getElementById('editAmount').value);
   if (isNaN(newAmount)) return await showAlert('Сумма должна быть числом!');
-
   let newCat = document.getElementById('editCategorySelect').value;
   const manualCat = document.getElementById('editNewCategory').value.trim();
   if (manualCat) newCat = manualCat;
-
   const applyToAll = await showModal("Применить изменения", `<p class="text-lg">Куда применить изменения?</p>`, [
     { text: "Только для этой транзакции", style: "bg-gray-200", value: false },
     { text: `Для всех с получателем "${trans.account}"`, style: "bg-blue-600 text-white", value: true }
   ]);
-
   if (applyToAll) {
     transactions.forEach(t => {
       if (t.account === trans.account) {
@@ -365,11 +372,9 @@ async function editTransaction(id) {
     trans.account = newAccount;
     trans.category = newCat;
   }
-
   trans.date = newDate;
   trans.description = newDesc;
   trans.amount = newAmount;
-
   saveData();
   renderAll();
 }
@@ -392,16 +397,13 @@ function renderTable() {
   const start = (currentPage - 1) * ROWS_PER_PAGE;
   const end = start + ROWS_PER_PAGE;
   if (currentPage === 1) tbody.innerHTML = '';
-
   const toRender = filteredTransactions.slice(start, end);
-
   const runningBalances = new Array(filteredTransactions.length);
   let suffix = 0;
   for (let i = filteredTransactions.length - 1; i >= 0; i--) {
     suffix += Number(filteredTransactions[i].amount);
     runningBalances[i] = suffix;
   }
-
   toRender.forEach((t, index) => {
     const rowIndex = start + index;
     const currentBalance = runningBalances[rowIndex];
@@ -425,7 +427,6 @@ function renderTable() {
     `;
     tbody.appendChild(row);
   });
-
   document.querySelectorAll('.edit-btn').forEach(btn => btn.onclick = () => editTransaction(btn.dataset.id));
   document.querySelectorAll('.delete-btn').forEach(btn => btn.onclick = () => deleteTransaction(btn.dataset.id));
   document.getElementById('loadMoreBtn').classList.toggle('hidden', end >= filteredTransactions.length);
@@ -479,7 +480,6 @@ function renderSummaryCards() {
   const income = filteredTransactions.filter(t => t.amount > 0).reduce((s, t) => s + t.amount, 0);
   const expense = filteredTransactions.filter(t => t.amount < 0).reduce((s, t) => s + Math.abs(t.amount), 0);
   const balance = filteredTransactions.reduce((sum, t) => sum + t.amount, 0);
-
   document.getElementById('summaryCards').innerHTML = `
     <div class="bg-white rounded-3xl shadow p-6 text-center border border-green-200">
       <div class="text-green-600 text-sm font-medium">ПРИХОД</div>
@@ -565,7 +565,8 @@ document.getElementById('search').oninput = filterData;
 document.getElementById('categoryFilter').onchange = filterData;
 document.getElementById('monthFilter').onchange = filterData;
 
-loadSavedData();
+// Запускаем загрузку из файла на GitHub при старте
+loadFromGitHub();
 </script>
 </body>
 </html>
